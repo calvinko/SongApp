@@ -36,9 +36,13 @@
                 text-decoration: none;
             }
             
+            #phonesongtext {
+                display: none;
+            }
+            
         </style>
         <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
-        <link href="font-awesome.css" rel="stylesheet" media="screen">
+        <link href="css/font-awesome.css" rel="stylesheet" media="screen">
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
         <script src="js/bootstrap.min.js"></script>
         <script>
@@ -50,23 +54,25 @@
                     
                     $("#phonesongtext").empty();
                     $("#phonesongtext").append("<pre style='font-size: 14px'>" + ret.songtext + "</pre>");
-                    $("#phoneindex").hide();
-                    $("#phonesongtext").animate({left: '1px'});
-                    
+                    $("#phonesongindex").hide();
+                    //$("#phonesongtext").animate({left: '1px'});
+                    $("#phonesongtext").show('fast');
                 })
             }
             
             function loadsongindex(bookid) {
                 $.post("getSongIndex.php", {bookid: bookid}, function(retdata) {
                     var ret = $.parseJSON(retdata);
-                    $("#phoneindex").empty();
+                    $("#phonesongindex").empty();
                     $.each(ret.data, function(index, val) {
                         var elm = $("<a href='#'>" + val.songnum + ". " + val.songname + "</a>");
                         elm.attr("songid", val.songid);  
                         elm.click(function() {
                             loadsong($(this).attr('songid'));
+                            $("#nav-home").hide();
+                            $("#nav-back").show();
                         });
-                        $("#phoneindex").append($("<div class='songindexentry'></div>").append(elm));
+                        $("#phonesongindex").append($("<div class='songindexentry'></div>").append(elm));
                     })
                 })
             }
@@ -88,9 +94,19 @@
                     var bid = parseInt($(this).attr('bookid'));
                     //alert(bid);
                     loadsongindex(bid);
-                    $("#phoneindex").show();
-                    $("#phonesongtext").css("left",'400px');
+                    
+                    $("#phonesongindex").show();
+                    //$("#phonesongtext").css("left",'400px');
                 })
+                $("#nav-back").click(function () {
+                    
+                    $("#phonesongindex").show();
+                    //$("#phonesongtext").animate({left: '400px'});
+                    $("#phonesongtext").hide();
+                    $("#nav-back").hide();
+                    $("#nav-home").show();
+                })
+                $("#nav-back").hide();
                 loadsongindex(31);
             })
         </script>
@@ -103,8 +119,8 @@
                    
                     
                         <ul class="nav">
-                            <li id="nav-home"><a class="brand" href="./bible.php"><i style="color:orangered" class="icon-home"></i></a></li>
-                            <li id="nav-back"><button style="padding-left:4px;" class="btn"><i class="icon-reply"></i>Back</button></li>
+                            <li id="nav-home"><a class="brand" href="./index.php"><i style="color:orangered" class="icon-home"></i></a></li>
+                            <li id="nav-back"><a><i style='color:skyblue;' class="icon-hand-left"></i></a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <span id="booktitle">神家詩歌 1</span>
@@ -125,7 +141,7 @@
                                     <li><a href="#">神家詩歌 9</a></li>
                                     <li><a href="#">神家詩歌 10</a></li>
                                     <li><a href="#">神家詩歌 11</a></li>
-                                    1 愛是當 
+                                     
                                 </ul>
                             </li>
                             <li class="active"><a class="ktooltip" data-toggle="tooltip" title="Index" href="#">Index</a></li>
@@ -135,15 +151,22 @@
             </div>
         </div>
         <div id="phonebox" style="padding: 0px; margin-left: -20px; margin-right: -18px; position: relative" class="visible-phone">
-            <div style="position: absolute" id="phoneindex">
+            <div style="position: absolute" id="phonesongindex">
                 
             </div>
-            <div style="position: absolute; left:300px; width:100%" id="phonesongtext">
+            <div style="position: absolute; width:100%" id="phonesongtext">
                 
             </div>
         </div>
-        <div class="hidden-phone">
-            Desktop
+        <div class="container-fluid hidden-phone">
+            <div class="row-fluid">
+            <div class="span4">
+                Index
+            </div>
+            <div class="span8">
+                <div class="well"></div>
+            </div>
+            </div>
         </div>
             
     </body>
