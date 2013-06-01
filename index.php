@@ -48,12 +48,13 @@
         <script>
             
             
-            function loadsong(songid) {
+            function loadsong(songid, songname) {
                 $.post("getSongText.php", {songid: songid}, function(retdata) {
                     var ret = $.parseJSON(retdata);
                     
-                    $("#phonesongtext").empty();
-                    $("#phonesongtext").append("<pre style='font-size: 14px'>" + ret.songtext + "</pre>");
+                    $("#phonesongtext, #tabletsongtext").empty();
+                    $("#phonesongtext").append("<h4>" + songname + "</h4><pre style='font-size: 14px'>" + ret.songtext + "</pre>");
+                    $("#tabletsongtext").append("<h4>" + songname + "</h4><pre style='font-size: 18px'>" + ret.songtext + "</pre>");
                     $("#phonesongindex").hide();
                     //$("#phonesongtext").animate({left: '1px'});
                     $("#phonesongtext").show('fast');
@@ -64,17 +65,41 @@
                 $.post("getSongIndex.php", {bookid: bookid}, function(retdata) {
                     var ret = $.parseJSON(retdata);
                     $("#phonesongindex").empty();
+                    $("#tabletsongindex").empty();
                     $.each(ret.data, function(index, val) {
                         var elm = $("<a href='#'>" + val.songnum + ". " + val.songname + "</a>");
                         elm.attr("songid", val.songid);  
                         elm.click(function() {
-                            loadsong($(this).attr('songid'));
+                            loadsong($(this).attr('songid'), val.songname);
                             $("#nav-home").hide();
                             $("#nav-back").show();
                         });
+                        
+                        var elm1 = $("<a href='#'>" + val.songnum + ". " + val.songname + "</a>");
+                        elm1.attr("songid", val.songid); 
+                        elm1.click(function() {
+                            loadsong($(this).attr('songid'), val.songname);
+                        });
                         $("#phonesongindex").append($("<div class='songindexentry'></div>").append(elm));
+                        $("#tabletsongindex").append($("<div class='songindexentry'></div>").append(elm1));
                     })
                 })
+            }
+            
+            function loadsongbook() {
+                $.post("getSongBook.php", {church: "Oakland"}, function(retdata) {
+                    var ret = $.parseJSON(retdata);
+                    $("#songbookindex").empty();
+                    $.each(ret, function(index, val) {
+                        var elm = $("<a href='#'>" + val.name + "</a>");
+                        elm.attr("bookid", val.id);  
+                        elm.click(function() {
+                            alert("click");
+                        });
+                        $("#songbookindex").append($("<div class='songindexentry'></div>").append(elm));
+                    });
+                });
+            
             }
             
             var songBookPhone = {
@@ -107,6 +132,7 @@
                     $("#nav-home").show();
                 })
                 $("#nav-back").hide();
+                loadsongbook(); 
                 loadsongindex(31);
             })
         </script>
@@ -123,18 +149,18 @@
                             <li id="nav-back"><a><i style='color:skyblue;' class="icon-hand-left"></i></a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <span id="booktitle">神家詩歌 1</span>
+                                    <span id="booktitle">Oakland 詩歌 1</span>
                                     <i class="caret"></i>
                                 </a>
                                 <ul id="nav-songbook" class="dropdown-menu">
                                     <li><a bookid="31" href="#">Oakland 詩歌 1</a></li>
                                     <li><a bookid="32" href="#">Oakland 詩歌 2</a></li>
                                     <li><a bookid="33" href="#">Oakland 詩歌 3</a></li>
-                                    <li><a href="#">神家詩歌 1</a></li>
-                                    <li><a href="#">神家詩歌 2</a></li>
-                                    <li><a href="#">神家詩歌 3</a></li>
-                                    <li><a href="#">神家詩歌 4</a></li>
-                                    <li><a href="#">神家詩歌 5</a></li>
+                                    <li><a bookid="11" href="#">神家詩歌 1</a></li>
+                                    <li><a bookid="12" href="#">神家詩歌 2</a></li>
+                                    <li><a bookid="13" href="#">神家詩歌 3</a></li>
+                                    <li><a bookid="14" href="#">神家詩歌 4</a></li>
+                                    <li><a bookid="15" href="#">神家詩歌 5</a></li>
                                     <li><a href="#">神家詩歌 6</a></li>
                                     <li><a href="#">神家詩歌 7</a></li>
                                     <li><a href="#">神家詩歌 8</a></li>
@@ -144,7 +170,7 @@
                                      
                                 </ul>
                             </li>
-                            <li class="active"><a class="ktooltip" data-toggle="tooltip" title="Index" href="#">Index</a></li>
+                            <li class="hidden-phone"><a class="ktooltip" data-toggle="tooltip" title="Index" href="#">Index</a></li>
                         </ul>
                     
                 </div>
@@ -159,13 +185,17 @@
             </div>
         </div>
         <div class="container-fluid hidden-phone">
-            <div class="row-fluid">
-            <div class="span4">
-                Index
-            </div>
-            <div class="span8">
-                <div class="well"></div>
-            </div>
+            <div style="max-width:1100px" class="row-fluid">
+                <div class="span4">
+                    <div id="tabletsongindex"></div>
+                </div>
+                <div class="span8">
+                    <div style="display: block; float: left">
+                        <button id ="btincfont" class="btn"><i class="icon-font"></i><i class="icon-caret-up"></i></button>
+                        <button id ="btdecfont" class="btn"><i class="icon-font"></i><i class="icon-caret-down"></i></button>
+                    </div>
+                    <div id="tabletsongtext"></div>
+                </div>
             </div>
         </div>
             
