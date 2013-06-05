@@ -121,7 +121,7 @@
                     loadsongindex(bid);
                     
                     $("#phonesongindex").show();
-                    //$("#phonesongtext").css("left",'400px');
+                    $("#phonesongtext").hide();
                 })
                 $("#nav-back").click(function () {
                     
@@ -161,12 +161,12 @@
                                     <li><a bookid="13" href="#">神家詩歌 3</a></li>
                                     <li><a bookid="14" href="#">神家詩歌 4</a></li>
                                     <li><a bookid="15" href="#">神家詩歌 5</a></li>
-                                    <li><a href="#">神家詩歌 6</a></li>
-                                    <li><a href="#">神家詩歌 7</a></li>
-                                    <li><a href="#">神家詩歌 8</a></li>
-                                    <li><a href="#">神家詩歌 9</a></li>
-                                    <li><a href="#">神家詩歌 10</a></li>
-                                    <li><a href="#">神家詩歌 11</a></li>
+                                    <li><a bookid="16" href="#">神家詩歌 6</a></li>
+                                    <li><a bookid="17" href="#">神家詩歌 7</a></li>
+                                    <li><a bookid="18" href="#">神家詩歌 8</a></li>
+                                    <li><a bookid="19"  href="#">神家詩歌 9</a></li>
+                                    <li><a bookid="20" href="#">神家詩歌 10</a></li>
+                                    <li><a bookid="21" href="#">神家詩歌 11</a></li>
                                      
                                 </ul>
                             </li>
@@ -190,9 +190,11 @@
                     <div id="tabletsongindex"></div>
                 </div>
                 <div class="span8">
-                    <div style="display: block; float: left">
-                        <button id ="btincfont" class="btn"><i class="icon-font"></i><i class="icon-caret-up"></i></button>
-                        <button id ="btdecfont" class="btn"><i class="icon-font"></i><i class="icon-caret-down"></i></button>
+                    <div style="display: block; float: left; width: 100%">
+                        <div class="btn-group">
+                        <a id ="btincfont" class="btn btn-small"><i class="icon-font"></i><i class="icon-caret-up"></i></a>
+                        <button id ="btdecfont" class="btn btn-small"><i class="icon-font"></i><i class="icon-caret-down"></i></button>
+                        </div>
                     </div>
                     <div id="tabletsongtext"></div>
                 </div>
