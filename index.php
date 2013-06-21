@@ -53,7 +53,7 @@
                     var ret = $.parseJSON(retdata);
                     
                     $("#desktopsongtext, #tabletsongtext").empty();
-                    $("#tabletsongtext").append("<h4>" + songname + "</h4><pre style='font-size: 14px'>" + ret.songtext + "</pre>");
+                    $("#tabletsongtext").append("<h4>" + songname + "</h4><pre style='font-size: 16px'>" + ret.songtext + "</pre>");
                     $("#desktopsongtext").append("<h4>" + songname + "</h4><pre style='font-size: 16px'>" + ret.songtext + "</pre>");
                     $("#tabletsongindex").hide();
                     //$("#phonesongtext").animate({left: '1px'});
@@ -108,6 +108,8 @@
                 var fontInt = parseInt(fontSize) + 1;
                 var lineHeight = fontInt + 4;
                 fontSize = fontInt + 'px';
+                $("#desktopsongtext pre").css('font-size', fontSize);
+                $("#desktopsongtext pre").css('line-height', lineHeight + 'px');
                 $("#tabletsongtext pre").css('font-size', fontSize);
                 $("#tabletsongtext pre").css('line-height', lineHeight + 'px');
                         
@@ -121,6 +123,8 @@
                 fontSize = fontInt + 'px';
                 $("#desktopsongtext pre").css('font-size', fontSize);
                 $("#desktopsongtext pre").css('line-height', lineHeight + 'px');
+                $("#tabletsongtext pre").css('font-size', fontSize);
+                $("#tabletsongtext pre").css('line-height', lineHeight + 'px');
                         
             }
             
@@ -209,7 +213,7 @@
                 </div>
             </div>
         </div>
-        <div id="phonebox" style="padding: 0px; margin-left: -20px; margin-right: -18px; position: relative" class="visible-tablet">
+        <div id="phonebox" style="padding: 0px; margin-left: -20px; margin-right: -18px; position: relative" class="visible-tablet visible-phone">
             <div style="position: absolute" id="tabletsongindex">
                 
             </div>
