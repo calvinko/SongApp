@@ -52,20 +52,20 @@
                 $.post("getSongText.php", {songid: songid}, function(retdata) {
                     var ret = $.parseJSON(retdata);
                     
-                    $("#phonesongtext, #tabletsongtext").empty();
-                    $("#phonesongtext").append("<h4>" + songname + "</h4><pre style='font-size: 14px'>" + ret.songtext + "</pre>");
-                    $("#tabletsongtext").append("<h4>" + songname + "</h4><pre style='font-size: 18px'>" + ret.songtext + "</pre>");
-                    $("#phonesongindex").hide();
+                    $("#desktopsongtext, #tabletsongtext").empty();
+                    $("#tabletsongtext").append("<h4>" + songname + "</h4><pre style='font-size: 14px'>" + ret.songtext + "</pre>");
+                    $("#desktopsongtext").append("<h4>" + songname + "</h4><pre style='font-size: 16px'>" + ret.songtext + "</pre>");
+                    $("#tabletsongindex").hide();
                     //$("#phonesongtext").animate({left: '1px'});
-                    $("#phonesongtext").show('fast');
+                    $("#tabletsongtext").show('fast');
                 })
             }
             
             function loadsongindex(bookid) {
                 $.post("getSongIndex.php", {bookid: bookid}, function(retdata) {
                     var ret = $.parseJSON(retdata);
-                    $("#phonesongindex").empty();
                     $("#tabletsongindex").empty();
+                    $("#desktopsongindex").empty();
                     $.each(ret.data, function(index, val) {
                         var elm = $("<a href='#'>" + val.songnum + ". " + val.songname + "</a>");
                         elm.attr("songid", val.songid);  
@@ -80,8 +80,8 @@
                         elm1.click(function() {
                             loadsong($(this).attr('songid'), val.songname);
                         });
-                        $("#phonesongindex").append($("<div class='songindexentry'></div>").append(elm));
-                        $("#tabletsongindex").append($("<div class='songindexentry'></div>").append(elm1));
+                        $("#tabletsongindex").append($("<div class='songindexentry'></div>").append(elm));
+                        $("#desktopsongindex").append($("<div class='songindexentry'></div>").append(elm1));
                     })
                 })
             }
@@ -102,6 +102,28 @@
             
             }
             
+            function incfontsize() {
+                var fontSize = $("#tabletsongtext pre").css('font-size').split('px')[0];
+
+                var fontInt = parseInt(fontSize) + 1;
+                var lineHeight = fontInt + 4;
+                fontSize = fontInt + 'px';
+                $("#tabletsongtext pre").css('font-size', fontSize);
+                $("#tabletsongtext pre").css('line-height', lineHeight + 'px');
+                        
+            }
+            
+            function decfontsize() {
+                var fontSize = $("#tabletsongtext pre").css('font-size').split('px')[0];
+
+                var fontInt = parseInt(fontSize) - 1;
+                var lineHeight = fontInt + 4;
+                fontSize = fontInt + 'px';
+                $("#desktopsongtext pre").css('font-size', fontSize);
+                $("#desktopsongtext pre").css('line-height', lineHeight + 'px');
+                        
+            }
+            
             var songBookPhone = {
                 bookid: 31,
                 songnum: 1,
@@ -120,18 +142,27 @@
                     //alert(bid);
                     loadsongindex(bid);
                     
-                    $("#phonesongindex").show();
-                    $("#phonesongtext").hide();
+                    $("#tabletsongindex").show();
+                    $("#tabletongtext").hide();
                 })
                 $("#nav-back").click(function () {
                     
-                    $("#phonesongindex").show();
+                    $("#tabletsongindex").show();
                     //$("#phonesongtext").animate({left: '400px'});
-                    $("#phonesongtext").hide();
+                    $("#tabletsongtext").hide();
                     $("#nav-back").hide();
                     $("#nav-home").show();
                 })
                 $("#nav-back").hide();
+                $("#btincfont").click(function() {
+                    incfontsize();
+                })
+                
+                 $("#btdecfont").click(function() {
+                    decfontsize();
+                })
+                
+                
                 loadsongbook(); 
                 loadsongindex(31);
             })
@@ -171,32 +202,31 @@
                                 </ul>
                             </li>
                             <li class="hidden-phone"><a class="ktooltip" data-toggle="tooltip" title="Index" href="#">Index</a></li>
+                            <li><a id ="btincfont"><i class="icon-font"></i><i class="icon-caret-up"></i></a></li>
+                            <li><a id ="btdecfont"><i class="icon-font"></i><i class="icon-caret-down"></i></a></li>
                         </ul>
                     
                 </div>
             </div>
         </div>
-        <div id="phonebox" style="padding: 0px; margin-left: -20px; margin-right: -18px; position: relative" class="visible-phone">
-            <div style="position: absolute" id="phonesongindex">
+        <div id="phonebox" style="padding: 0px; margin-left: -20px; margin-right: -18px; position: relative" class="visible-tablet">
+            <div style="position: absolute" id="tabletsongindex">
                 
             </div>
-            <div style="position: absolute; width:100%" id="phonesongtext">
+            <div style="position: absolute; width:100%" id="tabletsongtext">
                 
             </div>
         </div>
-        <div class="container-fluid hidden-phone">
+        <div class="container-fluid visible-desktop">
             <div style="max-width:1100px" class="row-fluid">
                 <div class="span4">
-                    <div id="tabletsongindex"></div>
+                    <div id="desktopsongindex"></div>
                 </div>
                 <div class="span8">
                     <div style="display: block; float: left; width: 100%">
-                        <div class="btn-group">
-                        <a id ="btincfont" class="btn btn-small"><i class="icon-font"></i><i class="icon-caret-up"></i></a>
-                        <button id ="btdecfont" class="btn btn-small"><i class="icon-font"></i><i class="icon-caret-down"></i></button>
-                        </div>
+                        
                     </div>
-                    <div id="tabletsongtext"></div>
+                    <div id="desktopsongtext" style="font-size: 16px"></div>
                 </div>
             </div>
         </div>
