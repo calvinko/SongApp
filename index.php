@@ -213,7 +213,7 @@
                 </div>
             </div>
         </div>
-        <div id="phonebox" style="padding: 0px; margin-left: -20px; margin-right: -18px; position: relative" class="visible-tablet visible-phone">
+        <div id="phonebox" style="padding: 0px; margin-left: 0px; margin-right: 0px; position: relative" class="visible-tablet visible-phone">
             <div style="position: absolute" id="tabletsongindex">
                 
             </div>
