@@ -329,6 +329,12 @@ if ($_GET['mobile']) {
         <script src="js/bootstrap.min.js"></script>
         <script>
             
+            function setcookie(title, value, exp) {
+                var expdate = new Date();
+                expdate.setDate(expdate.getDate() + exp);
+                
+                document.cookie = title+'='+value+';expires='+expdate.toGMTString()+';path=/SongApp/';
+            }
             
             function loadsong(songid, songname) {
                 $.post("getSongText.php", {songid: songid}, function(retdata) {
@@ -481,15 +487,16 @@ if ($_GET['mobile']) {
                                     <li><a bookid="16" href="#">神家詩歌 6</a></li>
                                     <li><a bookid="17" href="#">神家詩歌 7</a></li>
                                     <li><a bookid="18" href="#">神家詩歌 8</a></li>
-                                    <li><a bookid="19"  href="#">神家詩歌 9</a></li>
+                                    <li><a bookid="19" href="#">神家詩歌 9</a></li>
                                     <li><a bookid="20" href="#">神家詩歌 10</a></li>
                                     <li><a bookid="21" href="#">神家詩歌 11</a></li>
                                      
                                 </ul>
                             </li>
-                            <li class="hidden-phone"><a class="ktooltip" data-toggle="tooltip" title="Index" href="#">Index</a></li>
+                            
                             <li><a id ="btincfont"><i class="icon-font"></i><i class="icon-caret-up"></i></a></li>
                             <li><a id ="btdecfont"><i class="icon-font"></i><i class="icon-caret-down"></i></a></li>
+                            <li><a class="ktooltip" data-toggle="tooltip" title="Index" onclick="setcookie('church','oakland',100)">Setting</a></li>
                         </ul>
                     
                 </div>
