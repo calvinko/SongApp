@@ -31,7 +31,7 @@ function getsongbookindex($bookid) {
     global $mysqli;
     if ($mysqli == null)
         initmysqli();
-    $result = $mysqli->query("SELECT songnum,songname,songbook.songid FROM songbook join songlyrics on songbook.songid=songlyrics.songid WHERE bookid=$bookid");
+    $result = $mysqli->query("SELECT songnum,songname,page,songbook.songid FROM songbook join songlyrics on songbook.songid=songlyrics.songid WHERE bookid=$bookid");
     $rows = array();
     if ($result) {
         while ( ($row = $result->fetch_assoc()) != NULL) {
