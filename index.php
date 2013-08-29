@@ -180,7 +180,7 @@ if ($_GET['mobile']) {
                      $.post("getSongText.php", {songid: sid}, function(retdata) {
                         var ret = $.parseJSON(retdata);
                         $("#lyricsbox .bname").html(thisobj.bookname);
-                        $("#lyricsbox .lyrics").html("<pre style='font-size: 16px'>" + songname + "\n\n" + ret.songtext + "</pre>");  
+                        $("#lyricsbox .lyrics").html("<pre style='font-size: 20px'>" + songname + "\n\n" + ret.songtext + "</pre>");  
                      });
                 }
                 this.getsongtextfromid = function(sid) {
@@ -250,6 +250,9 @@ if ($_GET['mobile']) {
                 <li class="boxentry"><a bookid="31" href="#">Oakland 詩歌 1</a></li>
                 <li class="boxentry"><a bookid="32" href="#">Oakland 詩歌 2</a></li>
                 <li class="boxentry"><a bookid="33" href="#">Oakland 詩歌 3</a></li>
+                <li class="boxentry"><a bookid="101" href="#">English Song 1</a></li>
+                <li class="boxentry"><a bookid="105" href="#">Sac Songbook - Butterfly</a></li>
+                <li class="boxentry"><a bookid="81" href="#">普通話詩歌 1</a></li>
                 <li class="boxentry"><a bookid="11" href="#">神家詩歌 1</a></li>
                 <li class="boxentry"><a bookid="12" href="#">神家詩歌 2</a></li>
                 <li class="boxentry"><a bookid="13" href="#">神家詩歌 3</a></li>
@@ -341,10 +344,9 @@ if ($_GET['mobile']) {
                     var ret = $.parseJSON(retdata);
                     
                     $("#desktopsongtext, #tabletsongtext").empty();
-                    $("#tabletsongtext").append("<h4>" + songname + "</h4><pre style='font-size: 16px'>" + ret.songtext + "</pre>");
-                    $("#desktopsongtext").append("<h4>" + songname + "</h4><pre style='font-size: 16px'>" + ret.songtext + "</pre>");
+                    $("#tabletsongtext").append("<h4>" + songname + "</h4><pre style='font-size: 22px; line-height:26px;'>" + ret.songtext + "</pre>");
+                    $("#desktopsongtext").append("<h3>" + songname + "</h3><pre style='font-size: 22px; line-height:26px;'>" + ret.songtext + "</pre>");
                     $("#tabletsongindex").hide();
-                    //$("#phonesongtext").animate({left: '1px'});
                     $("#tabletsongtext").show('fast');
                 })
             }
@@ -479,6 +481,9 @@ if ($_GET['mobile']) {
                                     <li><a bookid="31" href="#">Oakland 詩歌 1</a></li>
                                     <li><a bookid="32" href="#">Oakland 詩歌 2</a></li>
                                     <li><a bookid="33" href="#">Oakland 詩歌 3</a></li>
+                                    <li><a bookid="101" href="#">English Song 1</a></li>
+                                    <li><a bookid="105" href="#">Sac Songbook - Butterfly</a></li>
+                                    <li><a bookid="81" href="#">普通話詩歌 1</a></li>
                                     <li><a bookid="11" href="#">神家詩歌 1</a></li>
                                     <li><a bookid="12" href="#">神家詩歌 2</a></li>
                                     <li><a bookid="13" href="#">神家詩歌 3</a></li>
@@ -519,7 +524,7 @@ if ($_GET['mobile']) {
                     <div style="display: block; float: left; width: 100%">
                         
                     </div>
-                    <div id="desktopsongtext" style="font-size: 16px"></div>
+                    <div id="desktopsongtext" style="font-size: 20px"></div>
                 </div>
             </div>
         </div>

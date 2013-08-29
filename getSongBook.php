@@ -18,6 +18,7 @@ $booklist = array(
                 array(id => 31, name => 'Oakland 詩歌 1'),
                 array(id => 32, name => 'Oakland 詩歌 2'),
                 array(id => 33, name => 'Oakland 詩歌 3'),
+                array(id => 101, name=> 'English Song 1'),
                 array(id => 11, name => '神家詩歌 1'),
                 array(id => 12, name => '神家詩歌 2'),
                 array(id => 13, name => '神家詩歌 3'),
