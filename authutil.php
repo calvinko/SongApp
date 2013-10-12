@@ -40,14 +40,12 @@ function rand_string( $length ) {
 
 function generateblowfishsalt() {
         $salt = '$2x$14$' . rand_string(22);
-        return $salt;
-        
+        return $salt;     
 }
 
 function generatemd5salt() {
         $salt = "\$1\$" . rand_string(9);
         return $salt;
-        
 }
     
 function checkpassword($password, $hashpw) {
@@ -55,9 +53,10 @@ function checkpassword($password, $hashpw) {
         return $r == $hashpw;
 }
     
-function changepassword($password, $newps, $hashpw) {
-        if (checkpassword($password, $hashpw)) {
+function changepassword($userid, $oldpassword, $hashpw, $newpassword) {
+        if (checkpassword($oldpassword, $hashpw)) {
             
+            return true;
         } else {
             return false;
         }
@@ -66,8 +65,6 @@ function changepassword($password, $newps, $hashpw) {
  // initial password setting
 function setpassword($userid, $password) {
     $hashedpassword = crypt($password, generatemd5salt());
-
-
     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
     $result = $mysqli->query("UPDATE usertbl SET passwd='$hashedpassword' WHERE userid = $userid");
     if ($result) {

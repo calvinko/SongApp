@@ -166,6 +166,7 @@ if ($_GET['mobile']) {
                         $.each(ret.data, function(index, val) {
                             var elm = $("<a href='#'>" + val.songnum + ". " + val.songname + "</a>");
                             elm.attr("songid", val.songid);  
+                            
                             elm.click(function() {
                                 $("#lyricsbox .lyrics").html("<div class='cimage'><img src='/images/uploading-big.gif'/></div>");
                                 thisobj.loadsongtext(val.songid, val.songnum, val.songname);                             
@@ -250,7 +251,8 @@ if ($_GET['mobile']) {
                 <li class="boxentry"><a bookid="31" href="#">Oakland 詩歌 1</a></li>
                 <li class="boxentry"><a bookid="32" href="#">Oakland 詩歌 2</a></li>
                 <li class="boxentry"><a bookid="33" href="#">Oakland 詩歌 3</a></li>
-                <li class="boxentry"><a bookid="101" href="#">English Song 1</a></li>
+                <li class="boxentry"><a bookid="34" href="#">Oakland 詩歌 4</a></li>
+                <li class="boxentry"><a bookid="120" href="#">English Song 1</a></li>
                 <li class="boxentry"><a bookid="105" href="#">Sac Songbook - Butterfly</a></li>
                 <li class="boxentry"><a bookid="81" href="#">普通話詩歌 1</a></li>
                 <li class="boxentry"><a bookid="11" href="#">神家詩歌 1</a></li>
@@ -263,7 +265,8 @@ if ($_GET['mobile']) {
                 <li class="boxentry"><a bookid="18" href="#">神家詩歌 8</a></li>
                 <li class="boxentry"><a bookid="19"  href="#">神家詩歌 9</a></li>
                 <li class="boxentry"><a bookid="20" href="#">神家詩歌 10</a></li>
-                <li class="boxentry borderbottom"><a bookid="21" href="#">神家詩歌 11</a></li>
+                <li class="boxentry"><a bookid="21" href="#">神家詩歌 11</a></li>
+                <li class="boxentry borderbottom"><a bookid="24" href="#">愛的迴響</a></li>
           </ul>
       </div>
       <div id="songindex" style="display:none" class="contentbox">
@@ -481,7 +484,8 @@ if ($_GET['mobile']) {
                                     <li><a bookid="31" href="#">Oakland 詩歌 1</a></li>
                                     <li><a bookid="32" href="#">Oakland 詩歌 2</a></li>
                                     <li><a bookid="33" href="#">Oakland 詩歌 3</a></li>
-                                    <li><a bookid="101" href="#">English Song 1</a></li>
+                                    <li><a bookid="34" href="#">Oakland 詩歌 4</a></li>
+                                    <li><a bookid="120" href="#">English Song 1</a></li>
                                     <li><a bookid="105" href="#">Sac Songbook - Butterfly</a></li>
                                     <li><a bookid="81" href="#">普通話詩歌 1</a></li>
                                     <li><a bookid="11" href="#">神家詩歌 1</a></li>
@@ -495,6 +499,7 @@ if ($_GET['mobile']) {
                                     <li><a bookid="19" href="#">神家詩歌 9</a></li>
                                     <li><a bookid="20" href="#">神家詩歌 10</a></li>
                                     <li><a bookid="21" href="#">神家詩歌 11</a></li>
+                                    <li><a bookid="24" href="#">愛的迴響</a></li>
                                      
                                 </ul>
                             </li>
@@ -502,6 +507,8 @@ if ($_GET['mobile']) {
                             <li><a id ="btincfont"><i class="icon-font"></i><i class="icon-caret-up"></i></a></li>
                             <li><a id ="btdecfont"><i class="icon-font"></i><i class="icon-caret-down"></i></a></li>
                             <li><a class="ktooltip" data-toggle="tooltip" title="Index" onclick="setcookie('church','oakland',100)">Setting</a></li>
+                            <li class=""><a class="ktooltip" data-toggle="tooltip" title="Song Books Management" href="../BibleApp/songmgmt.php">Song Management</a></li>
+                            
                         </ul>
                     
                 </div>

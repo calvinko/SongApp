@@ -18,11 +18,13 @@ require_once("authutil.php");
        
     } 
     
-function checkpermission($uid, $ownerid=0, $groupid=100) {
+function checkpermission($uid, $ownerid=-1, $groupid=100) {
     if ($uid == 1001) {
         return TRUE;
     } else if ($uid == $ownerid) {
-        
+        return TRUE;
+    } else {
+        return FALSE;
     }
 }
 
@@ -53,13 +55,21 @@ if ( isset($_POST['songtext'])) {
 
 if ($mysqli == null)
         initmysqli();
-$result = $mysqli->query("UPDATE songlyrics SET songname='$songname', songtext='$songtext' WHERE songid=$songid");
+
+if (checkpermission($userid)) {
+    $result = $mysqli->query("UPDATE songlyrics SET songname='$songname', songtext='$songtext' WHERE songid=$songid");
     
-if ($result) {
-    $ret = $result->fetch_assoc();
-    $ret['status'] = '1';
+    if ($result) {
+        $ret = $result->fetch_assoc();
+        $ret['status'] = '1';
+        
+    } else {
+        $ret['status'] = '0';
+    }
     echo json_encode($ret);
 } else {
     $ret['status'] = '0';
+    $ret['error'] = 'Permission Denial';
+    echo json_encode($ret);
 }
 ?>
