@@ -28,7 +28,7 @@ $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
 $result = $mysqli->query("SELECT * from songbook WHERE bookid=$songbookid ORDER BY songnum ASC");
 
-$wellformed = true;
+/*$wellformed = true;
 if ($result) {
     $i = 1;
     while (($row = $result->fetch_assoc())) {
@@ -42,7 +42,7 @@ if ($result) {
         $i++;
     }
     
-}
+}*/
 
 
 

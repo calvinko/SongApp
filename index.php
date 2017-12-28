@@ -20,7 +20,7 @@ if ($_GET['mobile']) {
     if ($mobile) {
 ?>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
@@ -28,6 +28,8 @@ if ($_GET['mobile']) {
         <link href="css/font-awesome.css" rel="stylesheet" media="screen">
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
         <style>
+            
+           
             .ktabbar {
                 position: fixed;
                 background-color: #f5f5f5;
@@ -144,6 +146,8 @@ if ($_GET['mobile']) {
               
                 padding-left: 4px;
             }
+            
+           
         </style>    
     </head>
     <body>
@@ -181,7 +185,7 @@ if ($_GET['mobile']) {
                      $.post("getSongText.php", {songid: sid}, function(retdata) {
                         var ret = $.parseJSON(retdata);
                         $("#lyricsbox .bname").html(thisobj.bookname);
-                        $("#lyricsbox .lyrics").html("<pre style='font-size: 20px'>" + songname + "\n\n" + ret.songtext + "</pre>");  
+                        $("#lyricsbox .lyrics").html("<pre style='font-size: 24px'>" + songname + "\n\n" + ret.songtext + "</pre>");  
                      });
                 }
                 this.getsongtextfromid = function(sid) {
@@ -240,7 +244,7 @@ if ($_GET['mobile']) {
             
       </script>
       <div class="ktabbar">
-          <div style="width: 40px;" class="ktab"><a href=""><i style="padding-top:4px;"class="icon-home"></i></a></div>
+          <div style="width: 40px;" class="ktab"><a href=""><i style="padding-top:4px;" class="icon-home"></i></a></div>
           <div id="hymntab" tid="hymn" class="ktab atab">Library</div>
           <div id="songindextab" tid="songindex" class="ktab atab">Index</div>
           <div id="lyrictab" tid="lyricsbox" class="ktab atab">Lyrics</div>
@@ -251,7 +255,7 @@ if ($_GET['mobile']) {
                 <li class="boxentry"><a bookid="31" href="#">Oakland 詩歌 1</a></li>
                 <li class="boxentry"><a bookid="32" href="#">Oakland 詩歌 2</a></li>
                 <li class="boxentry"><a bookid="33" href="#">Oakland 詩歌 3</a></li>
-                <li class="boxentry"><a bookid="34" href="#">Oakland 詩歌 4</a></li>
+                <li class="boxentry"><a bookid="34" href="#"> Other 詩歌 4</a></li>
                 <li class="boxentry"><a bookid="120" href="#">English Song 1</a></li>
                 <li class="boxentry"><a bookid="105" href="#">Sac Songbook - Butterfly</a></li>
                 <li class="boxentry"><a bookid="81" href="#">普通話詩歌 1</a></li>
@@ -266,6 +270,9 @@ if ($_GET['mobile']) {
                 <li class="boxentry"><a bookid="19"  href="#">神家詩歌 9</a></li>
                 <li class="boxentry"><a bookid="20" href="#">神家詩歌 10</a></li>
                 <li class="boxentry"><a bookid="21" href="#">神家詩歌 11</a></li>
+                <li class="boxentry"><a bookid="22" href="#">神家詩歌 12</a></li>
+                <li class="boxentry"><a bookid="23" href="#">神家詩歌 13</a></li>
+                <li class="boxentry"><a bookid="25" href="#">神家詩歌 14</a></li>
                 <li class="boxentry borderbottom"><a bookid="24" href="#">愛的迴響</a></li>
           </ul>
       </div>
@@ -292,13 +299,29 @@ if ($_GET['mobile']) {
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
         
-        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <style>
             body {
                 padding-top: 45px;
                 padding-bottom: 30px;
             }
+            
+             .overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 10;
+                background-color: rgba(0,0,0,0.2); /*dim the background*/
+            }
+            
             
             .songindexentry {
                 margin: 0px;
@@ -316,7 +339,7 @@ if ($_GET['mobile']) {
                 padding: 4px 6px;
                 display: block;
                 line-height: 36px;
-            }
+            } 
             
             .songindexentry a:hover {
                
@@ -328,13 +351,23 @@ if ($_GET['mobile']) {
                 display: none;
             }
             
-        </style>
-        <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
-        <link href="css/font-awesome.css" rel="stylesheet" media="screen">
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script>
+            .bcol {
+                padding-top:16px;
+            }
             
+            #songindexpane {
+                height: 760px;
+                overflow: scroll;
+                display:block;
+            }
+            
+        </style>
+        
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+        <script>
+            var linksongid;
             function setcookie(title, value, exp) {
                 var expdate = new Date();
                 expdate.setDate(expdate.getDate() + exp);
@@ -342,19 +375,50 @@ if ($_GET['mobile']) {
                 document.cookie = title+'='+value+';expires='+expdate.toGMTString()+';path=/SongApp/';
             }
             
-            function loadsong(songid, songname) {
+            function loadsongpane2(songid) {
                 $.post("getSongText.php", {songid: songid}, function(retdata) {
                     var ret = $.parseJSON(retdata);
+                    $("#dt-pane2 .ncol").html("<h3>" + ret.songname + "</h3>");
                     
+                    $("#dt-pane2 .songtext").html("<pre style='font-size: 22px; line-height:24px;'>" + ret.songtext + "</pre>");
+                    $("#songindexpane").hide();
+                    $("#dt-pane1").removeClass("col-md-8");
+                    $("#dt-pane1").addClass("col-md-6");
+                    $("#dt-pane2").show();
+                });  
+            }
+            
+            function copypane(p1, p2) {
+                p2.find(".songtext").html(p1.find(".songtext pre").clone());
+                p2.find(".ncol").html(p1.find(".ncol").clone());
+            }
+            
+            function loadsong(songid, songname) {
+                $("#loading-overlay").removeClass("hide");
+                $.post("getSongText.php", {songid: songid}, function(retdata) {
+                    var ret = $.parseJSON(retdata);
+                    linksongid = ret.relsongid;
                     $("#desktopsongtext, #tabletsongtext").empty();
-                    $("#tabletsongtext").append("<h4>" + songname + "</h4><pre style='font-size: 22px; line-height:26px;'>" + ret.songtext + "</pre>");
-                    $("#desktopsongtext").append("<h3>" + songname + "</h3><pre style='font-size: 22px; line-height:26px;'>" + ret.songtext + "</pre>");
+                    $("#dt-pane1 .ncol").html("<h3>" + songname + "</h3>");
+                    if (ret.relsongid != "0") {
+                        var but = $('<button class="btn btn-default">Rel. Song <i class="fa fa-bookmark"></i></button>');
+                        but.click(function () {
+                            loadsongpane2(ret.relsongid);
+                        });
+                        $("#dt-pane1 .bcol .linkgp").html(but);
+                    } else {
+                        $("#dt-pane1 .bcol .linkgp").empty();
+                    }
+                    $("#tabletsongtext").append("<h4>" + songname + "</h4><pre style='font-size: 26px; line-height:30px;'>" + ret.songtext + "</pre>");
+                    $("#desktopsongtext").append("<pre style='font-size: 26px; line-height:30px;'>" + ret.songtext + "</pre>");
+                    $("#loading-overlay").addClass("hide");
                     $("#tabletsongindex").hide();
                     $("#tabletsongtext").show('fast');
                 })
             }
             
             function loadsongindex(bookid) {
+                $("#loading-overlay").removeClass("hide");
                 $.post("getSongIndex.php", {bookid: bookid}, function(retdata) {
                     var ret = $.parseJSON(retdata);
                     $("#tabletsongindex").empty();
@@ -368,14 +432,21 @@ if ($_GET['mobile']) {
                             $("#nav-back").show();
                         });
                         
+                        var pmark = "";
+                        if (val.page != '0') {
+                            pmark = $("<span style='float:right; height:32px'>p. " + val.page + "</span>")
+                        }
                         var elm1 = $("<a href='#'>" + val.songnum + ". " + val.songname + "</a>");
+                        elm1.append(pmark);
                         elm1.attr("songid", val.songid); 
                         elm1.click(function() {
                             loadsong($(this).attr('songid'), val.songname);
                         });
                         $("#tabletsongindex").append($("<div class='songindexentry'></div>").append(elm));
                         $("#desktopsongindex").append($("<div class='songindexentry'></div>").append(elm1));
+                        showsongindexpanel();
                     })
+                    $("#loading-overlay").addClass("hide");
                 })
             }
             
@@ -395,30 +466,14 @@ if ($_GET['mobile']) {
             
             }
             
-            function incfontsize() {
-                var fontSize = $("#tabletsongtext pre").css('font-size').split('px')[0];
-
-                var fontInt = parseInt(fontSize) + 1;
+            function changefontsize(pane, unit) {
+                var fontSize = pane.find(".songtext pre").css('font-size').split('px')[0];
+                
+                var fontInt = parseInt(fontSize) + unit;
                 var lineHeight = fontInt + 4;
                 fontSize = fontInt + 'px';
-                $("#desktopsongtext pre").css('font-size', fontSize);
-                $("#desktopsongtext pre").css('line-height', lineHeight + 'px');
-                $("#tabletsongtext pre").css('font-size', fontSize);
-                $("#tabletsongtext pre").css('line-height', lineHeight + 'px');
-                        
-            }
-            
-            function decfontsize() {
-                var fontSize = $("#tabletsongtext pre").css('font-size').split('px')[0];
-
-                var fontInt = parseInt(fontSize) - 1;
-                var lineHeight = fontInt + 4;
-                fontSize = fontInt + 'px';
-                $("#desktopsongtext pre").css('font-size', fontSize);
-                $("#desktopsongtext pre").css('line-height', lineHeight + 'px');
-                $("#tabletsongtext pre").css('font-size', fontSize);
-                $("#tabletsongtext pre").css('line-height', lineHeight + 'px');
-                        
+                pane.find(".songtext pre").css('font-size', fontSize);
+                pane.find(".songtext pre").css('line-height', lineHeight + 'px');
             }
             
             var songBookPhone = {
@@ -429,6 +484,10 @@ if ($_GET['mobile']) {
                 }
             }
             
+            function showsongindexpanel() {
+                 $("#songindexpane").show();
+                 $("#dt-pane2").hide();
+            }
             
             $(function() {
                 $("#nav-songbook li a").click(function(ev) {
@@ -451,28 +510,65 @@ if ($_GET['mobile']) {
                     $("#nav-home").show();
                 })
                 $("#nav-back").hide();
-                $("#btincfont").click(function() {
-                    incfontsize();
-                })
+               
+                 $("#btn-incfont1").click(function() {
+                    changefontsize($("#dt-pane1"), 1);
+                });
                 
-                 $("#btdecfont").click(function() {
-                    decfontsize();
-                })
+                $("#btn-decfont1").click(function() {
+                    changefontsize($("#dt-pane1"), -1);
+                });
                 
+                $("#btn-incfont2").click(function() {
+                    changefontsize($("#dt-pane2"), 1);
+                });
                 
+                $("#btn-decfont2").click(function() {
+                    changefontsize($("#dt-pane2"), -1);
+                });
+                
+                $("#btn-toggleindex").click(function() {
+                    if ($("#songindexpane").is(":visible")) {
+                        $("#songindexpane").toggle();
+                    } else {
+                        $("#songindexpane").toggle();
+                        $("#dt-pane2").hide();
+                    }
+                    
+                });
+                
+                $("#btn-copypane").click(function() {
+                    copypane($("#dt-pane1"), $("#dt-pane2"));
+                });
+                
+                $("#btn-togglepane").click(function() {
+                    if ($("#dt-pane2").is(":visible")) {
+                        $("#dt-pane2").hide();
+                        $("#dt-pane1").addClass("col-md-8");
+                        $("#dt-pane1").removeClass("col-md-6");
+                    } else {
+                        $("#songindexpane").hide();
+                        $("#dt-pane1").removeClass("col-md-8");
+                        $("#dt-pane1").addClass("col-md-6");
+                        $("#dt-pane2").show();
+                        
+                    }
+                    
+                });
                 loadsongbook(); 
                 loadsongindex(31);
             })
         </script>
     </head>
     <body>
-        
+       
         <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                   
-                    
-                        <ul class="nav">
+            <div class="container">
+                <div class="navbar-header">
+                    <span class="navbar-brand">SongApp</span>
+                </div>
+                       
+                        <ul class="nav navbar-nav">
                             <li id="nav-home"><a class="brand" href="./index.php"><i style="color:orangered" class="icon-home"></i></a></li>
                             <li id="nav-back"><a><i style='color:skyblue;' class="icon-hand-left"></i></a></li>
                             <li class="dropdown">
@@ -484,7 +580,7 @@ if ($_GET['mobile']) {
                                     <li><a bookid="31" href="#">Oakland 詩歌 1</a></li>
                                     <li><a bookid="32" href="#">Oakland 詩歌 2</a></li>
                                     <li><a bookid="33" href="#">Oakland 詩歌 3</a></li>
-                                    <li><a bookid="34" href="#">Oakland 詩歌 4</a></li>
+                                    <li><a bookid="34" href="#">Other 詩歌 4</a></li>
                                     <li><a bookid="120" href="#">English Song 1</a></li>
                                     <li><a bookid="105" href="#">Sac Songbook - Butterfly</a></li>
                                     <li><a bookid="81" href="#">普通話詩歌 1</a></li>
@@ -499,6 +595,9 @@ if ($_GET['mobile']) {
                                     <li><a bookid="19" href="#">神家詩歌 9</a></li>
                                     <li><a bookid="20" href="#">神家詩歌 10</a></li>
                                     <li><a bookid="21" href="#">神家詩歌 11</a></li>
+                                    <li><a bookid="22" href="#">神家詩歌 12</a></li>
+                                    <li><a bookid="23" href="#">神家詩歌 13</a></li>
+                                    <li><a bookid="25" href="#">神家詩歌 14</a></li>
                                     <li><a bookid="24" href="#">愛的迴響</a></li>
                                      
                                 </ul>
@@ -507,14 +606,14 @@ if ($_GET['mobile']) {
                             <li><a id ="btincfont"><i class="icon-font"></i><i class="icon-caret-up"></i></a></li>
                             <li><a id ="btdecfont"><i class="icon-font"></i><i class="icon-caret-down"></i></a></li>
                             <li><a class="ktooltip" data-toggle="tooltip" title="Index" onclick="setcookie('church','oakland',100)">Setting</a></li>
-                            <li class=""><a class="ktooltip" data-toggle="tooltip" title="Song Books Management" href="../BibleApp/songmgmt.php">Song Management</a></li>
+                            <li class=""><a class="ktooltip" data-toggle="tooltip" title="Song Books Management" href="songmgmt.php">Song Management</a></li>
                             
                         </ul>
                     
-                </div>
+                
             </div>
         </div>
-        <div id="phonebox" style="padding: 0px; margin-left: 0px; margin-right: 0px; position: relative" class="visible-tablet visible-phone">
+        <div id="phonebox" style="padding: 0px; margin-left: 0px; margin-right: 0px; position: relative" class="visible-sm">
             <div style="position: absolute" id="tabletsongindex">
                 
             </div>
@@ -522,20 +621,67 @@ if ($_GET['mobile']) {
                 
             </div>
         </div>
-        <div class="container-fluid visible-desktop">
-            <div style="max-width:1100px" class="row-fluid">
-                <div class="span4">
+        <div class="container visible-lg visible-md">
+            <div style="max-width:1200px" class="row">
+                <div style="padding-top:12px; padding-bottom: 5px" class="col-md-12">
+                        
+                    <div class="btn-group">
+                        <button id="btn-toggleindex" class="btn btn-default"><i class="fa fa-caret-square-o-left"></i></button>
+                        <button id="btn-togglepane" class="btn btn-default"><i class="fa fa-columns"></i></button>
+                        <button id="btn-copypane" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
+                        
+
+                    </div>
+                    
+                   
+                </div>
+                <div id="songindexpane" style="height: 800px" class="col-md-4">
                     <div id="desktopsongindex"></div>
                 </div>
-                <div class="span8">
-                    <div style="display: block; float: left; width: 100%">
+                <div id="dt-pane1" class="col-md-8 panel panel-default">
+                    <div class="">
+                        <div class="ncol col-md-7"></div>
+                        <div class="bcol col-md-5">
+                            <div class="btn-group">
+                                <button id="btn-incfont1" class="btn btn-default"><i class="fa fa-search-plus"></i></button>
+                                <button id="btn-decfont1" class="btn btn-default"><i class="fa fa-search-minus"></i></button>
+                            </div>
+                            <div class="linkgp btn-group">
+                                
+                            </div>
+                        </div>
                         
                     </div>
-                    <div id="desktopsongtext" style="font-size: 20px"></div>
+                    <div id="desktopsongtext" style="font-size: 26px; min-height:600px" class="songtext panel-body col-md-12">
+                        
+                    </div>
+                </div>
+                <div id="dt-pane2" style="display:none" class="col-md-6 panel panel-default">
+                     <div class="">
+                        <div class="ncol col-md-8"></div>
+                        <div class="bcol col-md-4">
+                            <div class="btn-group">
+                                <button id="btn-incfont2" class="btn btn-default"><i class="fa fa-search-plus"></i></button>
+                                <button id="btn-decfont2" class="btn btn-default"><i class="fa fa-search-minus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="desktopsongtext2" class="songtext panel-body col-md-12" style="font-size: 20px; min-height: 600px">
+                        
+                    </div>
                 </div>
             </div>
         </div>
             
+        <div id="loading-overlay" style="text-align: center" class="hide overlay">    
+            <div style="display:inline-block; margin: 220px auto">
+                <div style="background-color: #000; padding: 2px 30px; border-radius: 5px;  font-size: 16px; color: white;">
+                    Loading <img src="images/loading-b1.gif" height="50">
+                </div>
+                <br/>
+                
+            </div>
+        </div>
     </body>
     
     
