@@ -4,19 +4,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-define('DB_NAME', 'dbko');
-
-/** MySQL database username */
-define('DB_USER', 'dbko');
-
-/** MySQL database password */
-define('DB_PASSWORD', 'Spart@123');
-
-/** MySQL hostname */
-define('DB_HOST', 'dbko.db.3694379.hostedresource.com');
-
-/** Database Charset to use in creating database tables. */
-define('DB_CHARSET', 'utf8');
 
 $cookiedomain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false; 
 

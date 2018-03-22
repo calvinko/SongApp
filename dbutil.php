@@ -3,20 +3,7 @@
  * dbutil:  sql database utility functions
  */
 
-define('DB_NAME', 'dbko');
-
-/** MySQL database username */
-define('DB_USER', 'dbko');
-
-/** MySQL database password */
-define('DB_PASSWORD', 'Spart@123');
-
-/** MySQL hostname */
-define('DB_HOST', 'dbko.db.3694379.hostedresource.com');
-
-/** Database Charset to use in creating database tables. */
-define('DB_CHARSET', 'utf8');
-
+require_once("dbinfo.php");
 $mysqli = null;
 
 function initmysqli() {
@@ -31,7 +18,21 @@ function getsongbookindex($bookid) {
     global $mysqli;
     if ($mysqli == null)
         initmysqli();
-    $result = $mysqli->query("SELECT songnum,songname,page,songbook.songid FROM songbook join songlyrics on songbook.songid=songlyrics.songid WHERE bookid=$bookid");
+    $result = $mysqli->query("SELECT songnum,songname,page,songbooktbl.songid FROM songbooktbl join songlyrics on songbooktbl.songid=songlyrics.songid WHERE bookid=$bookid");
+    $rows = array();
+    if ($result) {
+        while ( ($row = $result->fetch_assoc()) != NULL) {
+            $rows[] = $row;
+        }
+    }
+    return $rows;
+}
+
+function getsongbooklist() {
+    global $mysqli;
+    if ($mysqli == null)
+        initmysqli();
+    $result = $mysqli->query("SELECT bookid,name,attribute FROM booktbl");
     $rows = array();
     if ($result) {
         while ( ($row = $result->fetch_assoc()) != NULL) {

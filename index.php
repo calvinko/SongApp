@@ -197,6 +197,8 @@ if ($_GET['mobile']) {
                 $("#lyricsbox pre").style("font-size", s);
             }
 
+            
+
             var sbook;
             
             $(function() {
@@ -416,8 +418,17 @@ if ($_GET['mobile']) {
                     $("#tabletsongtext").show('fast');
                 })
             }
+
+            function loadsonglist() {
+                $.post("getSongBook", function(retdata) {
+                    var sblist = $.parseJSON(retdata);
+                    $.each(sblist), function(index, sbook) {
+                        console.log(sbook.name);
+                    }
+                });
+            }
             
-            function loadsongindex(bookid) {
+            function loadsongindex(bookid, attribute) {
                 $("#loading-overlay").removeClass("hide");
                 $.post("getSongIndex.php", {bookid: bookid}, function(retdata) {
                     var ret = $.parseJSON(retdata);
@@ -436,7 +447,12 @@ if ($_GET['mobile']) {
                         if (val.page != '0') {
                             pmark = $("<span style='float:right; height:32px'>p. " + val.page + "</span>")
                         }
-                        var elm1 = $("<a href='#'>" + val.songnum + ". " + val.songname + "</a>");
+                        var elm1;
+                        if (attribute > 0) {
+                            elm1 = $("<a href='#'>" + val.songnum + ". " + val.songname + "</a>");
+                        } else {
+                            elm1 = $("<a href='#'>" + val.songname + "</a>");
+                        }
                         elm1.append(pmark);
                         elm1.attr("songid", val.songid); 
                         elm1.click(function() {
@@ -453,14 +469,19 @@ if ($_GET['mobile']) {
             function loadsongbook() {
                 $.post("getSongBook.php", {church: "Oakland"}, function(retdata) {
                     var ret = $.parseJSON(retdata);
-                    $("#songbookindex").empty();
+                    $("#nav-songbook").empty();
                     $.each(ret, function(index, val) {
                         var elm = $("<a href='#'>" + val.name + "</a>");
-                        elm.attr("bookid", val.id);  
+                        var bid = val.bookid;
+                        var attr = val.attribute;
+                        elm.attr("bookid", val.bookid);  
                         elm.click(function() {
-                            alert("click");
+                            $("#booktitle").text(val.name);
+                            loadsongindex(bid, attr);
+                            $("#tabletsongindex").show();
+                            $("#tabletongtext").hide();
                         });
-                        $("#songbookindex").append($("<div class='songindexentry'></div>").append(elm));
+                        $("#nav-songbook").append($("<li></li>").append(elm));
                     });
                 });
             

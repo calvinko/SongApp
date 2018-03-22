@@ -1,7 +1,6 @@
 <?php
 
     require_once("authutil.php");
-    require_once("bcutil.php");
     $userid = 0;
     $instid = 1;
     $userprofile = array();
@@ -82,9 +81,7 @@
         
         <script type="text/javascript">
             var userid = <?php echo $userid ?>;
-            
-            
-            
+
             function loadsong(songid, songname) {
                 $.post("getSongText.php", {songid: songid}, function(retdata) {
                     var ret = $.parseJSON(retdata);
@@ -94,18 +91,21 @@
                    
                 })
             }
-            
+
             function loadsongbook() {
-                $.post("/SongApp/getSongBook.php", {church: "Oakland"}, function(retdata) {
+                $.post("getSongBook.php", {church: "Oakland"}, function(retdata) {
                     var ret = $.parseJSON(retdata);
-                    $("#songbookindex").empty();
+                    $("#nav-songbook").empty();
                     $.each(ret, function(index, val) {
                         var elm = $("<a href='#'>" + val.name + "</a>");
-                        elm.attr("bookid", val.id);  
+                        var bid = val.bookid;
+                        elm.attr("bookid", val.bookid);  
                         elm.click(function() {
-                            alert("click");
+                            loadsongindex(bid);
+                            $("#tabletsongindex").show();
+                            $("#tabletongtext").hide();
                         });
-                        $("#songbookindex").append($("<div class='songindexentry'></div>").append(elm));
+                        $("#nav-songbook").append($("<li></li>").append(elm));
                     });
                 });
             
@@ -246,6 +246,7 @@
                 } else {
                     $("#nav-login, #nav-signup").removeClass("hide");
                 }
+                loadsongbook();
                 songBook.reload();
                 $("#nav-songbook li a").click(function(ev) {
                     var t = $(this).text();
@@ -320,12 +321,8 @@
                 $(".ktooltip").tooltip({placement: "bottom"});
             })
              
-            
-             
-             
         </script>
     </head>
-    
     <body>
         
         <!-- Top Navigation Bar -->
@@ -347,10 +344,7 @@
                 </div>
 
                 <div class="collapse navbar-collapse">
-
-
                         <ul class="nav navbar-nav pull-right">
-
 
                             <li id="nav-setting" class="dropdown hide">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -370,7 +364,6 @@
                             </li>
 
                             <li id="nav-user" class="dropdown hide">
-
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                             <i class="icon-user"></i> 
                                             <?php echo $userprofile['firstname'] ?>
@@ -379,7 +372,6 @@
 
                                     <ul class="dropdown-menu">
                                             <li><a href="javascript:;"><i class="icon-user"></i>&nbsp Profile</a></li>
-
                                             <li class="divider"></li>
                                             <li><a href="logout.php"><i class="icon-signout"></i>&nbsp Logout</a></li>
                                     </ul>
@@ -448,25 +440,6 @@
                                         <li><a bookid="32" href="#">Oakland 詩歌 2</a></li>
                                         <li><a bookid="33" href="#">Oakland 詩歌 3</a></li>
                                         <li><a bookid="34" href="#">Oakland 詩歌 4</a></li>
-                                        <li><a bookid="120" href="#">English Song 1</a></li>
-                                        <li><a bookid="105" href="#">Sac Butterfly Songbook</a></li>
-                                        <li><a bookid="81" href="#">普通話詩歌 1</a></li>
-                                        <li><a bookid="11" href="#">神家詩歌 1</a></li>
-                                        <li><a bookid="12" href="#">神家詩歌 2</a></li>
-                                        <li><a bookid="13" href="#">神家詩歌 3</a></li>
-                                        <li><a bookid="14" href="#">神家詩歌 4</a></li>
-                                        <li><a bookid="15" href="#">神家詩歌 5</a></li>
-                                        <li><a bookid="16" href="#">神家詩歌 6</a></li>
-                                        <li><a bookid="17" href="#">神家詩歌 7</a></li>
-                                        <li><a bookid="18" href="#">神家詩歌 8</a></li>
-                                        <li><a bookid="19" href="#">神家詩歌 9</a></li>
-                                        <li><a bookid="20" href="#">神家詩歌 10</a></li>
-                                        <li><a bookid="21" href="#">神家詩歌 11</a></li>
-                                        <li><a bookid="22" href="#">神家詩歌 12</a></li>
-                                        <li><a bookid="23" href="#">神家詩歌 13</a></li>
-                                        <li><a bookid="25" href="#">神家詩歌 14</a></li>
-                                        <li><a bookid="24" href="#">愛的迴響</a></li>
-                                        
                                     </ul>
                                 </div>
                                 <div class="btn-group pull-right">
