@@ -275,7 +275,7 @@ if ($_GET['mobile']) {
                 <li class="boxentry"><a bookid="22" href="#">神家詩歌 12</a></li>
                 <li class="boxentry"><a bookid="23" href="#">神家詩歌 13</a></li>
                 <li class="boxentry"><a bookid="25" href="#">神家詩歌 14</a></li>
-                <li class="boxentry borderbottom"><a bookid="24" href="#">愛的迴響</a></li>
+                <li class="boxentry borderbottom"><a bookid="40" href="#">愛的迴響</a></li>
           </ul>
       </div>
       <div id="songindex" style="display:none" class="contentbox">
@@ -619,7 +619,7 @@ if ($_GET['mobile']) {
                                     <li><a bookid="22" href="#">神家詩歌 12</a></li>
                                     <li><a bookid="23" href="#">神家詩歌 13</a></li>
                                     <li><a bookid="25" href="#">神家詩歌 14</a></li>
-                                    <li><a bookid="24" href="#">愛的迴響</a></li>
+                                    <li><a bookid="40" href="#">愛的迴響</a></li>
                                      
                                 </ul>
                             </li>
