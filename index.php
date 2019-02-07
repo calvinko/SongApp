@@ -242,6 +242,7 @@ if ($_GET['mobile']) {
                     $("#lyricsbox pre").css('line-height', lineHeight + 'px');
                 
                 })
+                loadsongbook(); 
             });
             
       </script>
