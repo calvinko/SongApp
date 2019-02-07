@@ -254,7 +254,7 @@ if ($_GET['mobile']) {
           
       </div>
       <div id="hymn" class="contentbox">
-          <ul style="margin: 0px">
+          <ul id="m-nav-songbook> style="margin: 0px">
                 <li class="boxentry"><a bookid="31" href="#">Oakland 詩歌 1</a></li>
                 <li class="boxentry"><a bookid="32" href="#">Oakland 詩歌 2</a></li>
                 <li class="boxentry"><a bookid="33" href="#">Oakland 詩歌 3</a></li>
@@ -471,6 +471,7 @@ if ($_GET['mobile']) {
                 $.post("getSongBook.php", {church: "Oakland"}, function(retdata) {
                     var ret = $.parseJSON(retdata);
                     $("#nav-songbook").empty();
+                    $("#m-nav-songbook").empty();
                     $.each(ret, function(index, val) {
                         var elm = $("<a href='#'>" + val.name + "</a>");
                         var bid = val.bookid;
@@ -483,6 +484,7 @@ if ($_GET['mobile']) {
                             $("#tabletongtext").hide();
                         });
                         $("#nav-songbook").append($("<li></li>").append(elm));
+                        $("#m-nav-songbook").append($("<li class='boxentry'></li>").append(elm));
                     });
                 });
             
@@ -496,14 +498,6 @@ if ($_GET['mobile']) {
                 fontSize = fontInt + 'px';
                 pane.find(".songtext pre").css('font-size', fontSize);
                 pane.find(".songtext pre").css('line-height', lineHeight + 'px');
-            }
-            
-            var songBookPhone = {
-                bookid: 31,
-                songnum: 1,
-                loadindex: function() {
-                    loadsongindex(this.bookid);
-                }
             }
             
             function showsongindexpanel() {
