@@ -492,7 +492,6 @@ if ($_GET['mobile']) {
                 $.post("getSongBook.php", {church: "Oakland"}, function(retdata) {
                     var ret = $.parseJSON(retdata);
                     $("#nav-songbook").empty();
-                    $("#m-nav-songbook").empty();
                     $.each(ret, function(index, val) {
                         var elm = $("<a href='#'>" + val.name + "</a>");
                         var bid = val.bookid;
@@ -505,7 +504,6 @@ if ($_GET['mobile']) {
                             $("#tabletongtext").hide();
                         });
                         $("#nav-songbook").append($("<li></li>").append(elm));
-                        $("#m-nav-songbook").append($("<li class='boxentry'></li>").append(elm));
                     });
                 });
             }
