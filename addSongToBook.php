@@ -87,7 +87,7 @@ if (True) {
     
     $newsongname = "New Song $newsongid";
     if (($result2 = $mysqli->query("INSERT into songlyrics (songid,owner,tag,songname) VALUES($newsongid,$userid,'$tag','$newsongname')")) != null) {
-        $result3 = $mysqli->query("INSERT into songbook (bookid,songnum,songid) VALUES($songbookid,$songnum,$newsongid)");
+        $result3 = $mysqli->query("INSERT into songbooktbl (bookid,songnum,songid) VALUES($songbookid,$songnum,$newsongid)");
         if ($result3) {
             $ret['status'] = '1';
             $ret['error'] = '';

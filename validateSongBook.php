@@ -26,7 +26,7 @@ if ( isset($_POST['bookid'])) {
 
 $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-$result = $mysqli->query("SELECT * from songbook WHERE bookid=$songbookid ORDER BY songnum ASC");
+$result = $mysqli->query("SELECT * from songbooktbl WHERE bookid=$songbookid ORDER BY songnum ASC");
 
 /*$wellformed = true;
 if ($result) {
@@ -37,7 +37,7 @@ if ($result) {
         if ($snum != $i) {
             $sid = $row["sid"];
             $wellformed = false;   
-            $mysqli->query("UPDATE songbook SET songnum=$i WHERE sid=$sid");
+            $mysqli->query("UPDATE songbooktbl SET songnum=$i WHERE sid=$sid");
         }
         $i++;
     }
