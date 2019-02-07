@@ -197,6 +197,27 @@ if ($_GET['mobile']) {
                 $("#lyricsbox pre").style("font-size", s);
             }
 
+            function mloadsongbook() {
+                $.post("getSongBook.php", {church: "Oakland"}, function(retdata) {
+                    var ret = $.parseJSON(retdata);
+                    $("#m-nav-songbook").empty();
+                    $.each(ret, function(index, val) {
+                        var elm = $("<a href='#'>" + val.name + "</a>");
+                        var bid = val.bookid;
+                        var attr = val.attribute;
+                        elm.attr("bookid", val.bookid);  
+                        elm.click(function() {
+                            var bookid = $(this).attr("bookid");
+                            sbook = new SongBook(bookid, $(this).html());
+                            $("#songindex").html("<div class='cimage'><img src='/images/uploading-big.gif'/></div>");
+                            sbook.loadindex();
+                            $(".contentbox").hide();
+                            $("#songindex").show();
+                        });
+                        $("#m-nav-songbook").append($("<li class='boxentry'></li>").append(elm));
+                    });
+                });
+            }
             
 
             var sbook;
@@ -242,7 +263,7 @@ if ($_GET['mobile']) {
                     $("#lyricsbox pre").css('line-height', lineHeight + 'px');
                 
                 })
-                loadsongbook(); 
+                mloadsongbook(); 
             });
             
       </script>
@@ -487,7 +508,6 @@ if ($_GET['mobile']) {
                         $("#m-nav-songbook").append($("<li class='boxentry'></li>").append(elm));
                     });
                 });
-            
             }
             
             function changefontsize(pane, unit) {
