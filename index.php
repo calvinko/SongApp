@@ -275,7 +275,7 @@ if ($_GET['mobile']) {
           
       </div>
       <div id="hymn" class="contentbox">
-          <ul id="m-nav-songbook> style="margin: 0px">
+          <ul id="m-nav-songbook"> style="margin: 0px">
                 <li class="boxentry"><a bookid="31" href="#">Oakland 詩歌 1</a></li>
                 <li class="boxentry"><a bookid="32" href="#">Oakland 詩歌 2</a></li>
                 <li class="boxentry"><a bookid="33" href="#">Oakland 詩歌 3</a></li>
