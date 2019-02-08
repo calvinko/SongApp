@@ -57,7 +57,7 @@ if ($mysqli == null)
         initmysqli();
 
 if (checkpermission($userid)) {
-    $result = $mysqli->query("UPDATE songlyrics SET songname='$songname', songtext='$songtext' WHERE songid=$songid");
+    $result = $mysqli->query("UPDATE songlyrics SET songname='$songname', songtext=" + '"' + $songtext + '"' + "WHERE songid=$songid");
     
     if ($result) {
         //$ret = $result->fetch_assoc();
