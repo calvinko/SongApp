@@ -101,9 +101,12 @@
                         var bid = val.bookid;
                         elm.attr("bookid", val.bookid);  
                         elm.click(function() {
-                            loadsongindex(bid);
-                            $("#tabletsongindex").show();
-                            $("#tabletongtext").hide();
+                            songBook.bookid = val.bookid;
+                            songBook.currsongindex = -1;
+                            songBook.loadindex();
+                            //loadsongindex(bid);
+                            //$("#tabletsongindex").show();
+                            //$("#tabletongtext").hide();
                         });
                         $("#nav-songbook").append($("<li></li>").append(elm));
                     });
