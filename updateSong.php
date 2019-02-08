@@ -60,7 +60,7 @@ if (checkpermission($userid)) {
     $result = $mysqli->query("UPDATE songlyrics SET songname='$songname', songtext='$songtext' WHERE songid=$songid");
     
     if ($result) {
-        $ret = $result->fetch_assoc();
+        //$ret = $result->fetch_assoc();
         $ret['status'] = '1';
         
     } else {
