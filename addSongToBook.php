@@ -73,7 +73,7 @@ if (True) {
         }
     }
     
-    $result1 = $mysqli->query("SELECT MAX(songnum) FROM songbook WHERE bookid = $songbookid");
+    $result1 = $mysqli->query("SELECT MAX(songnum) FROM songbooktbl WHERE bookid = $songbookid");
     if ($result1) {
         $row = $result1->fetch_row();
         if (isset($row[0])) {
