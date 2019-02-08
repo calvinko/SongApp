@@ -57,14 +57,16 @@ if ($mysqli == null)
         initmysqli();
 
 if (checkpermission($userid)) {
-    $result = $mysqli->query("UPDATE songlyrics SET songname='$songname', songtext=" + '"' + $songtext + '"' + "WHERE songid=$songid");
-    
+    $sql = "UPDATE songlyrics SET songname='$songname', songtext=" . '"' . $songtext . '"' . "WHERE songid=$songid";
+    $result = $mysqli->query($sql);
+
     if ($result) {
         //$ret = $result->fetch_assoc();
         $ret['status'] = '1';
         
     } else {
         $ret['status'] = '0';
+        $ret['sql'] = $sql;
         $ret['errormsg'] = $mysqli->error;
     }
     echo json_encode($ret);
