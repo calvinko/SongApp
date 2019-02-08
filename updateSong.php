@@ -1,4 +1,4 @@
-?php
+<?php
 
 /*
  * To change this template, choose Tools | Templates
@@ -65,6 +65,7 @@ if (checkpermission($userid)) {
         
     } else {
         $ret['status'] = '0';
+        $ret['errormsg'] = $mysqli->error;
     }
     echo json_encode($ret);
 } else {
