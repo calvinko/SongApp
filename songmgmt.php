@@ -104,7 +104,6 @@
                             songBook.bookid = val.bookid;
                             songBook.currsongindex = -1;
                             songBook.loadindex();
-                            //loadsongindex(bid);
                             //$("#tabletsongindex").show();
                             //$("#tabletongtext").hide();
                         });
@@ -112,25 +111,6 @@
                     });
                 });
             
-            }
-            
-            function loadsongindex(bookid) {
-                $.post("/SongApp/getSongIndex.php", {bookid: bookid}, function(retdata) {
-                    var ret = $.parseJSON(retdata);
-                    $("#desktopsongindex").empty();
-                    $.each(ret.data, function(index, val) {
-                        var elm = $("<a href='#'>" + val.songnum + ". " + val.songname + "</a>");
-                        elm.attr("songid", val.songid);  
-                        elm.click(function() {
-                            $("#desktopsongindex a").removeClass("selected");
-                            $(this).addClass("selected");
-                            //loadsong($(this).attr('songid'), val.songname);
-                        });
-                        
-                        
-                        $("#desktopsongindex").append($("<div class='songindexentry'></div>").append(elm));
-                    })
-                })
             }
             
             var songBook = {
