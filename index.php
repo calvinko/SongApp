@@ -152,14 +152,19 @@ if ($_GET['mobile']) {
     </head>
     <body>
         <script>
+            var currentSongNum = 1;
+            var currentSongId = 1;
+            var currentSongName = "Song";
             function SongBook(bookid, bookname) 
             {
+                var me = this;
                 this.bookname = bookname;
                 this.bookid = bookid,
                 this.songnum = 1,
                 this.curpage = '1';
-                this.songname = [];
+                this.songname = {};
                 this.songtext = [];
+
                 
                 var thisobj = this;
                 this.loadindex = function() {
@@ -170,10 +175,11 @@ if ($_GET['mobile']) {
                         $.each(ret.data, function(index, val) {
                             var elm = $("<a href='#'>" + val.songnum + ". " + val.songname + "</a>");
                             elm.attr("songid", val.songid);  
-                            
+                            me.songname[val.songid] = val.songname;
                             elm.click(function() {
                                 $("#lyricsbox .lyrics").html("<div class='cimage'><img src='/images/uploading-big.gif'/></div>");
-                                thisobj.loadsongtext(val.songid, val.songnum, val.songname);                             
+                                me.loadsongtext(val.songid, val.songnum, val.songname);
+                                currentSongId = val.songid;
                                 $(".contentbox").hide();
                                 $("#lyricsbox").show();
                             });
@@ -185,6 +191,7 @@ if ($_GET['mobile']) {
                      $.post("getSongText.php", {songid: sid}, function(retdata) {
                         var ret = $.parseJSON(retdata);
                         $("#lyricsbox .bname").html(thisobj.bookname);
+                        $("#lyricsbox").attr("songid", sid);
                         $("#lyricsbox .lyrics").html("<pre style='font-size: 24px'>" + songname + "\n\n" + ret.songtext + "</pre>");  
                      });
                 }
@@ -239,7 +246,15 @@ if ($_GET['mobile']) {
                     $(".contentbox").hide();
                     $("#" + tid).show();
                 })
-                
+
+                $("#bt-prev").click(function() {
+                }
+
+                $("#bt-next").click(function() {
+                    currentSongNum = currentSongNum + 1;
+
+                }
+
                 $("#btincfont").click(function() {
                     var fontSize = $("#lyricsbox pre").css('font-size').split('px')[0];
 
@@ -308,6 +323,8 @@ if ($_GET['mobile']) {
           <div class='stitle'>
               <div class='bname'>SongBook</div>
               <div class='btn-group fontctrl'>
+                  <a id="bt-next`" class="btn"><i class="fa fa-arrow-left`"></i></button>
+                  <a id="bt-prev" class="btn"><i class="fa fa-arrow-right"></i></button>
                   <a id ="btincfont" class="btn"><i class="icon-font"></i><i class="icon-caret-up"></i></a>
                   <a id ="btdecfont" class="btn"><i class="icon-font"></i><i class="icon-caret-down"></i></a>
               </div>
