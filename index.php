@@ -338,8 +338,8 @@ if ($_GET['mobile']) {
           <div class='stitle'>
               <div class='bname'>SongBook</div>
               <div class='btn-group fontctrl'>
-                  <a id="bt-next" class="btn"><i class="icon-arrow-left"></i></a>
-                  <a style="margin-right: 5px;" id="bt-prev" class="btn"><i class="icon-arrow-right"></i></a>
+                  <a id="bt-prev" class="btn"><i class="icon-arrow-left"></i></a>
+                  <a style="margin-right: 5px;" id="bt-next" class="btn"><i class="icon-arrow-right"></i></a>
                   <a id ="btincfont" class="btn"><i class="icon-font"></i><i class="icon-caret-up"></i></a>
                   <a id ="btdecfont" class="btn"><i class="icon-font"></i><i class="icon-caret-down"></i></a>
               </div>
