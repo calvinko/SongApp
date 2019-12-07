@@ -195,7 +195,8 @@ if ($_GET['mobile']) {
                         var ret = $.parseJSON(retdata);
                         $("#lyricsbox .bname").html(thisobj.bookname);
                         $("#lyricsbox").attr("songid", sid);
-                        $("#lyricsbox .lyrics").html("<pre style='font-size: 24px'>" + songname + "\n\n" + ret.songtext + "</pre>");  
+                        $("#lyricsbox .lyrics").html("<pre style='font-size: 24px'>" + songname + "\n\n" + ret.songtext + "</pre>");
+                        $("#lyricsbox pre").css('line-height', '28px');
                      });
                 }
                 this.getsongtextfromid = function(sid) {
@@ -216,7 +217,9 @@ if ($_GET['mobile']) {
             }
             
             function setFontSize(s) {
+                var lineHeight = s + 4;
                 $("#lyricsbox pre").style("font-size", s);
+                $("#lyricsbox pre").css('line-height', lineHeight + 'px');
             }
 
             function mloadsongbook() {
