@@ -164,18 +164,21 @@ if ($_GET['mobile']) {
                 this.curpage = '1';
                 this.songname = {};
                 this.songtext = [];
+                this.songindex = [];
+                this.curindex = 0;
 
-                
                 var thisobj = this;
                 this.loadindex = function() {
                     $.post("getSongIndex.php", {bookid: this.bookid}, function(retdata) {
                         var ret = $.parseJSON(retdata);
                         $("#songindex").html("<h3>" + thisobj.bookname + "</h3>");
-                        
+                        thisobj.songindex = [];
+
                         $.each(ret.data, function(index, val) {
                             var elm = $("<a href='#'>" + val.songnum + ". " + val.songname + "</a>");
+                            thisobj.songindex.push([val.songid, val.songname]);
                             elm.attr("songid", val.songid);  
-                            me.songname[val.songid] = val.songname;
+
                             elm.click(function() {
                                 $("#lyricsbox .lyrics").html("<div class='cimage'><img src='/images/uploading-big.gif'/></div>");
                                 me.loadsongtext(val.songid, val.songnum, val.songname);
@@ -197,6 +200,18 @@ if ($_GET['mobile']) {
                 }
                 this.getsongtextfromid = function(sid) {
                     
+                }
+                this.loadnext = function() {
+                    this.curindex = (this.curindex + 1) % this.songindex.length;
+                    var d = this.songindex[this.curindex];
+                    this.loadsongtext(d[0], 10, d[1])
+                }
+                this.loadprev = function() {
+                    if (this.curindex > 0) {
+                        this.curindex = this.curindex - 1;
+                        var d = this.songindex[this.curindex];
+                        this.loadsongtext(d[0], 10, d[1])
+                    }
                 }
             }
             
@@ -248,11 +263,11 @@ if ($_GET['mobile']) {
                 })
 
                 $("#bt-prev").click(function() {
+                    sbook.loadprev();
                 });
 
                 $("#bt-next").click(function() {
-                    currentSongNum = currentSongNum + 1;
-
+                    sbook.loadnext();
                 });
 
                 $("#btincfont").click(function() {
@@ -323,8 +338,8 @@ if ($_GET['mobile']) {
           <div class='stitle'>
               <div class='bname'>SongBook</div>
               <div class='btn-group fontctrl'>
-                  <a id="bt-next`" class="btn"><i class="fa fa-arrow-left`"></i></button>
-                  <a id="bt-prev" class="btn"><i class="fa fa-arrow-right"></i></button>
+                  <a id="bt-next" class="btn"><i class="icon-arrow-left"></i></a>
+                  <a style="margin-right: 5px;" id="bt-prev" class="btn"><i class="icon-arrow-right"></i></a>
                   <a id ="btincfont" class="btn"><i class="icon-font"></i><i class="icon-caret-up"></i></a>
                   <a id ="btdecfont" class="btn"><i class="icon-font"></i><i class="icon-caret-down"></i></a>
               </div>
