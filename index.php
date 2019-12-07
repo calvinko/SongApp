@@ -248,12 +248,12 @@ if ($_GET['mobile']) {
                 })
 
                 $("#bt-prev").click(function() {
-                }
+                });
 
                 $("#bt-next").click(function() {
                     currentSongNum = currentSongNum + 1;
 
-                }
+                });
 
                 $("#btincfont").click(function() {
                     var fontSize = $("#lyricsbox pre").css('font-size').split('px')[0];
