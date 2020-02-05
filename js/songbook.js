@@ -4,40 +4,77 @@ var currentSongNum = 1;
 var currentSongId = 1;
 var currentSongName = "Song";
 
-function SongApp()
+function SongApp() {
+    var me = this;
+    var booklist = {}
+    var bookData = {}
 
-{
+    this.init = function(showListFunc) {
+        me.loadBookList("all", showListFunc)
+    }
 
+    this.loadBookList = function(chname, showList) {
+        $.post("getSongBook.php", {church: chname}, function(retdata) {
+            var ret = $.parseJSON(retdata);
+            $("#nav-songbook").empty();
+            $.each(ret, function(index, val) {
+                booklist[val.bookid] = [val.bookid, val.name];
+            });
+            showList(me);
+        })
+    }
 
+    this.getBookList = function() {
+        // bookid -> [id, bookname]
+        return booklist;
+    }
+
+    this.getSongBook = function(bookid) {
+        if (bookData[bookid] == undefined) {
+            if (booklist[bookid]) {
+                bookData[bookid] = SongBook(bookid, booklist[bookid][1])
+                return bookData[bookid];
+            } else {
+                return null;
+            }
+        } else {
+            return bookData[bookid];
+        }
+    }
 }
 
 function SongBook(bookid, bookname)
 {
     var me = this;
     this.bookname = bookname;
-    this.bookid = bookid,
-        this.songnum = 1,
-        this.curpage = '1';
+    this.bookid = bookid;
+    this.songnum = 1;
+    this.curpage = '1';
     this.songname = {};
     this.songtext = [];
     this.songindex = [];
-    this.songdata = {}
+    this.songdata = []
     this.curindex = 0;
-
+    this.showSongNumber = 0;
     var thisobj = this;
+
+
     this.loadindex = function() {
         $.post("getSongIndex.php", {bookid: this.bookid}, function(retdata) {
             var ret = $.parseJSON(retdata);
-            me.songdata = ret.data;
             me.songindex = [];
-            $.each(ret.data, function(index, val) {
-                me.songindex.push([val.songnum, val.songid, val.songname]);
-            }
+            me.songdata = ret.data;
+            //$.each(me.songdata, function(index, val) {
+            //    me.songindex.push([val.songnum, val.songid, val.songname]);
+            //}
             $("#songindex").html("<h3>" + me.bookname + "</h3>");
+            me.createSongIndex();
         });
-    }
-    this.showIndex = function() {
-        $.each(ret.data, function(index, val) {
+    };
+
+    this.createSongIndex = function() {
+        $.each(me.songdata, function(index, val) {
+            me.songindex[val.songnum] = [val.songid, val.songname];
             var elm = $("<a href='#'>" + val.songnum + ". " + val.songname + "</a>");
             thisobj.songindex.push([val.songid, val.songname]);
             elm.attr("songid", val.songid);
@@ -51,9 +88,41 @@ function SongBook(bookid, bookname)
             });
             $("#songindex").append($("<div class='boxentry'></div>").append(elm));
         });
+    };
 
-    }
-    this.loadsongtext = function(sid, songnum, songname) {
+    this.showIndexMobile = function() {
+        $.each(ret.data, function(index, val) {
+            var elm = $("<a href='#'>" + val.songnum + ". " + val.songname + "</a>");
+            me.songindex.push([val.songid, val.songname]);
+            elm.attr("songid", val.songid);
+            elm.click(function() {
+                $("#lyricsbox .lyrics").html("<div class='cimage'><img src='/images/uploading-big.gif'/></div>");
+                me.loadsongtext(val.songid, val.songnum, val.songname);
+                currentSongId = val.songid;
+                $(".contentbox").hide();
+                $("#lyricsbox").show();
+            });
+            $("#songindex").append($("<div class='boxentry'></div>").append(elm));
+        });
+    };
+
+    this.showIndex = function() {
+        $.each(ret.data, function(index, val) {
+            var elm = $("<a href='#'>" + val.songnum + ". " + val.songname + "</a>");
+            me.songindex.push([val.songid, val.songname]);
+            elm.attr("songid", val.songid);
+
+            elm.click(function() {
+                $("#lyricsbox .lyrics").html("<div class='cimage'><img src='/images/uploading-big.gif'/></div>");
+                me.loadsongtext(val.songid, val.songnum, val.songname);
+                currentSongId = val.songid;
+                $(".contentbox").hide();
+                $("#lyricsbox").show();
+            });
+            $("#songindex").append($("<div class='boxentry'></div>").append(elm));
+        });
+    };
+    this.showsongtext = function(sid, songnum, songname) {
         $.post("getSongText.php", {songid: sid}, function(retdata) {
             var ret = $.parseJSON(retdata);
             $("#lyricsbox .bname").html(thisobj.bookname);

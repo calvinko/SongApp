@@ -20,16 +20,12 @@ if ($_GET['mobile']) {
     if ($mobile) {
 ?>
     <head>
-         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/font-awesome.css" rel="stylesheet" media="screen">
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
         <style>
-            
-           
             .ktabbar {
                 position: fixed;
                 background-color: #f5f5f5;

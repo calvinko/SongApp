@@ -49,7 +49,6 @@ function generateCookie( $id, $expiration ) {
         //$hash = hash_hmac( 'md5', $id . $expiration, SECRET_KEY );
 
 	$cookie = $id . '|' . $expiration . '|' . $hash;
-
 	return $cookie;
 
 }
@@ -101,6 +100,5 @@ function retrieveRows($dbtable, $cond="1") {
         return $ret;
     }
 }
-
 
 ?>
