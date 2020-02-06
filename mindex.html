@@ -1,9 +1,3 @@
-<?php
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-?>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -29,13 +23,13 @@
                         $(".contentbox").hide();
                         $("#songindex").show();
                     });
-                    $("#m-nav-songbook").append($("<li class='boxentry'></li>").append(elm));
+                    $("#m-nav-songbook").append($("<li class='songindexentry'></li>").append(elm));
                 });
             }
 
 
             $(function() {
-                sapp = new SongApp();
+                sapp = new SongApp("mobile");
                 sapp.init(showIndex);
 
 

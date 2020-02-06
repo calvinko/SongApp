@@ -38,32 +38,28 @@
     display: block;
     width:100%;
     overflow: auto;
-
-
-
-}
-
-li.boxentry {
-    list-style: none;
-}
-
-.boxentry {
-    margin: 0px;
-
-    border-top: 1px solid black;
-
-    font-size: 120%;
-    float: left;
-    width: 98%;
-
-
 }
 
 .borderbottom {
     border-bottom: 1px solid black;
 }
 
-.boxentry a {
+li.songindexentry {
+    list-style: none;
+}
+
+.songindexentry {
+    margin: 0px;
+
+    border-top: 1px solid black;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 120%;
+    float: left;
+    width: 98%;
+
+}
+.songindexentry a {
     color: black;
     height: 36px;
     padding: 4px 6px;
@@ -71,7 +67,7 @@ li.boxentry {
     line-height: 36px;
 }
 
-.boxentry a:hover {
+.songindexentry a:hover {
 
     background-color: lightblue;
     text-decoration: none;
@@ -82,11 +78,10 @@ li.boxentry {
 }
 
 .cimage img {
-
     margin-top: 50px;
-
-
 }
+
+
 
 .stitle {
     width:99%;
