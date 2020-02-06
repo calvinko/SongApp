@@ -42,6 +42,7 @@
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
         <script src="js/songbook.js" ></script>
         <script>
+            var sapp;
             var linksongid;
             function setcookie(title, value, exp) {
                 var expdate = new Date();
@@ -82,24 +83,45 @@
             }
 
             function buildIndex(sa) {
+                var c = window.location.hash.substr(1).split("-");
+                var fbid = 11;
+                var fsid = 0;
+                if (c != "") {
+                    fbid = parseInt(c[0]);
+                    if (c[1] != undefined) {
+                        fsid = parseInt(c[1]);
+                    }
+                }
                 $("#nav-songbook").empty();
                 $.each(sa.getBookList(), function(bid, val) {
-                    var elm = $("<a href='#'>" + val.name + "</a>");
+                    var elm = $("<a href=''>" + val.name + "</a>");
                     var attr = val.attribute;
                     elm.attr("bookid", bid);
-                    elm.click(function() {
-                        var sbook = sapp.getSongBook(bid);
+                    elm.click(function(ev) {
+                        var sbook = sa.getSongBook(bid);
+                        window.location.hash = bid;
                         sbook.loadindex();
                         $("#booktitle").text(val.name);
+                        ev.preventDefault();
                     });
+                    if (fbid == bid) {
+                        sa.getSongBook(bid).loadindex();
+                        if (fsid != 0) {
+                            console.log("show song ", fsid)
+                            sa.getSongBook(bid).showSongTextDesktop(fsid);
+                        }
+                        $("#booktitle").text(val.name);
+                    }
                     $("#nav-songbook").append($("<li></li>").append(elm));
                 });
             }
+
+
             
             $(function() {
-
                 sapp = new SongApp("display");
                 sapp.init(buildIndex);
+
                 $("#nav-back").click(function () {
                     
                     $("#tabletsongindex").show();
@@ -152,6 +174,21 @@
                         
                     }
                 });
+
+                window.onhashchange = function() {
+                    var c = window.location.hash.substr(1).split("-");
+                    var fbid = 11;
+                    var fsid = 0;
+                    //console.log("on hash change ", c);
+                    if (c != "") {
+                        fbid = parseInt(c[0]);
+                        sapp.getSongBook(fbid).loadindex();
+                        if (c[1] != undefined) {
+                            fsid = parseInt(c[1]);
+                            sapp.getSongBook(fbid).showSongTextDesktop(fsid);
+                        }
+                    }
+                }
 
             })
         </script>

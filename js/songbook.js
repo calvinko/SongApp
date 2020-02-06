@@ -106,8 +106,10 @@ function SongBook(bookid, bookname, attribute, type)
             }
             elm.append(pmark);
             elm.attr("songid", val.songid);
-            elm.click(function() {
-                me.showSongTextDesktop($(this).attr('songid'), val.songnum, val.songname);
+            elm.click(function(ev) {
+                me.showSongTextDesktop(val.songid, val.songnum, val.songname);
+                window.location.hash = me.bookid + '-' + val.songid;
+                ev.preventDefault();
             });
             $("#desktopsongindex").append($("<div class='songindexentry'></div>").append(elm));
             showsongindexpanel();
@@ -140,12 +142,12 @@ function SongBook(bookid, bookname, attribute, type)
     this.showsongtext = function(sid, songnum, songname) {
         $.post("getSongText.php", {songid: sid}, function(retdata) {
             var ret = $.parseJSON(retdata);
-            $("#lyricsbox .bname").html(thisobj.bookname);
+            $("#lyricsbox .bname").html(me.bookname);
             $("#lyricsbox").attr("songid", sid);
             if (me.getSongTextType(ret.songtext) > 1) {
-                $("#lyricsbox .lyrics").html("<pre style='font-size: 24px; line-height: 28px'>" + songname + "\n\n" + ret.songtext + "</pre>");
+                $("#lyricsbox .lyrics").html("<pre style='font-size: 24px; line-height: 28px'>" + ret.songname + "\n\n" + ret.songtext + "</pre>");
             } else {
-                $("#lyricsbox .lyrics").html("<pre style='font-size: 18px; line-height: 20px'>" + songname + "\n\n" + ret.songtext + "</pre>");
+                $("#lyricsbox .lyrics").html("<pre style='font-size: 18px; line-height: 20px'>" + ret.songname + "\n\n" + ret.songtext + "</pre>");
             }
 
         });
@@ -157,7 +159,7 @@ function SongBook(bookid, bookname, attribute, type)
             var ret = $.parseJSON(retdata);
             linksongid = ret.relsongid;
             $("#desktopsongtext").empty();
-            $("#dt-pane1 .ncol").html("<h3>" + songname + "</h3>");
+            $("#dt-pane1 .ncol").html("<h3>" + ret.songname + "</h3>");
             if (ret.relsongid != "0") {
                 var but = $('<button class="btn btn-default">Rel. Song <i class="fa fa-bookmark"></i></button>');
                 but.click(function () {
@@ -169,10 +171,10 @@ function SongBook(bookid, bookname, attribute, type)
             }
             if (me.getSongTextType(ret.songtext) > 1) {
                 $("#desktopsongtext").append("<pre style='font-size: 26px; line-height:30px;'>" + ret.songtext + "</pre>");
-                $("#lyricsbox .lyrics").html("<pre style='font-size: 24px; line-height: 28px'>" + songname + "\n\n" + ret.songtext + "</pre>");
+                $("#lyricsbox .lyrics").html("<pre style='font-size: 24px; line-height: 28px'>" + ret.songname + "\n\n" + ret.songtext + "</pre>");
             } else {
                 $("#desktopsongtext").append("<pre style='font-size: 18px; line-height:20px;'>" + ret.songtext + "</pre>");
-                $("#lyricsbox .lyrics").html("<pre style='font-size: 18px; line-height: 20px'>" + songname + "\n\n" + ret.songtext + "</pre>");
+                $("#lyricsbox .lyrics").html("<pre style='font-size: 18px; line-height: 20px'>" + ret.songname + "\n\n" + ret.songtext + "</pre>");
             }
 
             $("#loading-overlay").addClass("hide");
@@ -201,28 +203,6 @@ function setFontSize(s) {
     var lineHeight = s + 4;
     $("#lyricsbox pre").style("font-size", s);
     $("#lyricsbox pre").css('line-height', lineHeight + 'px');
-}
-
-function mloadsongbook() {
-    $.post("getSongBook.php", {church: "Oakland"}, function(retdata) {
-        var ret = $.parseJSON(retdata);
-        $("#m-nav-songbook").empty();
-        $.each(ret, function(index, val) {
-            var elm = $("<a href='#'>" + val.name + "</a>");
-            var bid = val.bookid;
-            var attr = val.attribute;
-            elm.attr("bookid", val.bookid);
-            elm.click(function() {
-                var bookid = $(this).attr("bookid");
-                sbook = new SongBook(bookid, $(this).html());
-                $("#songindex").html("<div class='cimage'><img src='/images/uploading-big.gif'/></div>");
-                sbook.loadindex();
-                $(".contentbox").hide();
-                $("#songindex").show();
-            });
-            $("#m-nav-songbook").append($("<li class='boxentry'></li>").append(elm));
-        });
-    });
 }
 
 function loadsongindex(bookid, attribute) {
@@ -261,26 +241,6 @@ function loadsongindex(bookid, attribute) {
         })
         $("#loading-overlay").addClass("hide");
     })
-}
-
-function loadsongbook() {
-    $.post("getSongBook.php", {church: "Oakland"}, function(retdata) {
-        var ret = $.parseJSON(retdata);
-        $("#nav-songbook").empty();
-        $.each(ret, function(index, val) {
-            var elm = $("<a href='#'>" + val.name + "</a>");
-            var bid = val.bookid;
-            var attr = val.attribute;
-            elm.attr("bookid", val.bookid);
-            elm.click(function() {
-                $("#booktitle").text(val.name);
-                loadsongindex(bid, attr);
-                $("#tabletsongindex").show();
-                $("#tabletongtext").hide();
-            });
-            $("#nav-songbook").append($("<li></li>").append(elm));
-        });
-    });
 }
 
 function setcookie(title, value, exp) {
