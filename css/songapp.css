@@ -73,6 +73,15 @@ li.songindexentry {
     text-decoration: none;
 }
 
+.songindexentry a.selected {
+    opacity: 0.8;
+    background-color: lightcyan;
+}
+
+.active {
+    background-color: lightgray;
+}
+
 .cimage {
     text-align: center;
 }

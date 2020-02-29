@@ -11,13 +11,11 @@
     } else {
         //header("Location: login.php?dpage=songmgmt");
     }
-    
 ?>   
 
 <html>
     <head>    
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <!-- Latest compiled and minified CSS -->
@@ -30,53 +28,20 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
         <link href="font-awesome-3.2.1/css/font-awesome.css" rel="stylesheet" media="screen">
+        <link href="css/songapp.css" rel="stylesheet" media="screen">
        
        
         <style>
-            
             body {
                 padding-top: 55px;
                 padding-bottom: 30px;
                 background: url(/images/body-bg1.png);
             }
-            
-            .songindexentry {
-                margin: 0px;
-                
-                border-top: 1px solid black;
-               
-                font-size: 120%;
-                float: left;
-                width: 98%;
-                
-            }
-            .songindexentry a {
-                color: black;
-                height: 36px;
-                padding: 4px 6px;
-                display: block;
-                line-height: 36px;
-                opacity: 0.8;
-            }
-            
+
             .songindexentry a:hover {
-               
-                
                 opacity: 1;
                 text-decoration: none;
             }
-            
-            .songindexentry a.selected {
-                opacity: 0.8;
-                background-color: lightcyan;
-                
-                
-            }
-            
-            .active {
-                background-color: lightgray;
-            }
-            
         </style>
         
         <script type="text/javascript">
@@ -86,9 +51,7 @@
                 $.post("getSongText.php", {songid: songid}, function(retdata) {
                     var ret = $.parseJSON(retdata);
                     $("#desktopsongtext").empty();
-                    
                     $("#desktopsongtext").append("<h3>" + songname + "</h3><pre style='font-size: 22px; line-height:26px;'>" + ret.songtext + "</pre>");
-                   
                 })
             }
 
@@ -104,15 +67,15 @@
                             songBook.bookid = val.bookid;
                             songBook.currsongindex = -1;
                             songBook.loadindex();
-                            //$("#tabletsongindex").show();
-                            //$("#tabletongtext").hide();
                         });
                         $("#nav-songbook").append($("<li></li>").append(elm));
                     });
                 });
-            
             }
-            
+
+            function songBookEditor(SongBook) {
+            }
+
             var songBook = {
                 bookid: 31,
                 currsongindex: -1,
@@ -127,7 +90,6 @@
                     $("#desktopsongindex").empty();
                     $.each(this.songlist, function(index, val) {
                         var elm = $("<a class='pull-left1' href='#'>" + val.songnum + ". " + val.songname + "</a>");
-                        var editelm = $("<button class='pull-right btn btn-default btn-xs'><i class='glyphicon glyphicon-trash'></i></button>");
                         elm.attr("songid", val.songid);
                         elm.attr("songindex", index);
                         elm.attr("songnum", val.songnum);
@@ -222,7 +184,13 @@
                     }
                 }
             }
-            
+
+            function showBookIndex(sa) {
+                $("#nav-songbook").empty();
+                $.each(sa.getBookList(), function(bid, val) {
+                });
+            }
+
             $(function() {
                 if (userid != 0) {
                     $("#nav-setting, #nav-user").removeClass("hide");
@@ -318,10 +286,9 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.php"><i style="color:orangered" class="icon-star"></i>&nbsp; BibleCircle</a>
+                    <a class="navbar-brand" href="index.php"><i style="color:orangered" class="icon-star"></i>&nbsp; SongEdit</a>
                     <ul class="nav navbar-nav">
-                        <li class=""><a href="./index.php">Home</a></li>
-                        <li class=""><a class="ktooltip" data-toggle="tooltip" title="Bible" href="./bible.php">Bible</a></li>
+                        <li class=""><a href="./index.php">Song</a></li>
                         <li class="active"><a class="ktooltip" data-toggle="tooltip" title="Song Books Management" href="./songmgmt.php">Song Books</a></li>
                     </ul>
                 </div>

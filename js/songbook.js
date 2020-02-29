@@ -18,7 +18,7 @@ function SongApp(displaytype) {
         me.loadBookList("Oakland", showListFunc)
     }
 
-    this.loadBookList = function(chname, showList) {
+    this.loadBookList = function(chname, callback) {
         $.post("getSongBook.php", {church: chname}, function(retdata) {
             var ret = $.parseJSON(retdata);
             $("#m-nav-songbook").empty();
@@ -26,12 +26,13 @@ function SongApp(displaytype) {
             $.each(ret, function(index, val) {
                 booklist[val.bookid] = {bookid: val.bookid, name: val.name, attribute: val.attribute};
             });
-            showList(me);
-        })
+            if (callback) {
+                callback(me);
+            }
+        });
     }
 
     this.getBookList = function() {
-        // bookid -> [id, bookname]
         return booklist;
     }
 
