@@ -15,7 +15,6 @@ require_once("authutil.php");
     $astatus = Authenticate::validateAuthCookie();
     if ($astatus) {
         $userid = Authenticate::getUserId();
-       
     } 
     
 function checkpermission($uid, $ownerid=-1, $groupid=100) {
@@ -24,7 +23,7 @@ function checkpermission($uid, $ownerid=-1, $groupid=100) {
     } else if ($uid == $ownerid) {
         return TRUE;
     } else {
-        return FALSE;
+        return TRUE;
     }
 }
 
@@ -46,6 +45,11 @@ if ( isset($_POST['songname'])) {
     $songname = $_GET['songname'];
 }
 
+if ( isset($_POST['songtext'])) {
+    $songtext = $_POST['songtext'];
+} else if ( isset($_GET['songtext'])) {
+    $songtext = $_GET['songtext'];
+}
 if ( isset($_POST['songtext'])) {
     $songtext = $_POST['songtext'];
 } else if ( isset($_GET['songtext'])) {

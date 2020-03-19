@@ -89,6 +89,7 @@ function SongBook(bookid, bookname, attribute, type)
                 $("#lyricsbox").show();
             });
             $("#songindex").append($("<div class='songindexentry'></div>").append(elm));
+            me.songindex[index] = [val.songid, val.songname, val.songnum];
         });
     };
 
@@ -187,15 +188,15 @@ function SongBook(bookid, bookname, attribute, type)
 
     }
     this.loadnext = function() {
-        this.curindex = (this.curindex + 1) % this.songindex.length;
-        var d = this.songindex[this.curindex];
-        this.showsongtext(d[0], 10, d[1])
+        me.curindex = (me.curindex + 1) % me.songindex.length;
+        var d = me.songindex[me.curindex];
+        me.showsongtext(d[0], d[2], d[1])
     }
     this.loadprev = function() {
-        if (this.curindex > 0) {
-            this.curindex = this.curindex - 1;
-            var d = this.songindex[this.curindex];
-            this.showsongtext(d[0], 10, d[1])
+        if (me.curindex > 0) {
+            me.curindex = this.curindex - 1;
+            var d = me.songindex[me.curindex];
+            me.showsongtext(d[0], d[2], d[1])
         }
     }
 }

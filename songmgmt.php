@@ -109,7 +109,7 @@
                 loadindex: function() {
                     
                     var obj = this;
-                    $.post("/SongApp/getSongIndex.php", {bookid: this.bookid}, function(retdata) {
+                    $.post("getSongIndex.php", {bookid: this.bookid}, function(retdata) {
                         var ret = $.parseJSON(retdata);
                         obj.songlist = ret.data;
                         obj.displayindex();
@@ -121,7 +121,7 @@
                     var songindex = thisobj.currsongindex;
                     if (songindex >= 0) {
                         var songid = thisobj.songlist[songindex].songid;
-                        $.post("/SongApp/getSongText.php", {songid: songid}, function(retdata) {
+                        $.post("getSongText.php", {songid: songid}, function(retdata) {
                             var ret = $.parseJSON(retdata);
                             $("#songid").text(songid);
                             thisobj.currsongtext = ret.songtext;  
@@ -135,7 +135,7 @@
                 },
                 reload: function() {
                     var obj = this;
-                    $.post("/SongApp/getSongIndex.php", {bookid: this.bookid}, function(retdata) {
+                    $.post("getSongIndex.php", {bookid: this.bookid}, function(retdata) {
                         var ret = $.parseJSON(retdata);
                         obj.songlist = ret.data;
                         obj.loadindex();
@@ -161,7 +161,8 @@
                             var text = $("#songtext textarea").val();
                             var sname = $("#songtext input[name='songname']").val();
                             var relsongid = $("#songtext input[name='relsongid']").val();
-                            $.post("updateSong.php", {songid: songid, songname: sname, songtext: text, relsongid: relsongid}, function(retdata) {
+                            var pagenum = $("#songtext input[name='pagenum']").val();
+                            $.post("updateSong.php", {songid: songid, songname: sname, songtext: text, pagenum: pagenum, relsongid: relsongid}, function(retdata) {
                                 thisobj.songdisplaymode = "read";
                                 thisobj.reload();
                             });
@@ -173,8 +174,10 @@
                         })
                         
                         var linkinput = $("<span>relsongid: </span><input name='relsongid' type='text' size='10' class=''></input>");
+                        var pagenuminput = $("<span style='margin-left: 20px'>page number: </span><input name='pagenum' type='text' size='10' class=''></input>");
                         linkinput.val(this.currsongrid);
                         $("#songtext").append(linkinput);
+                        $("#songtext").append(pagenoinput);
                         $("#songtext").append(input);
                         $("#songtext").append("<textarea style='height:500px' class='form-control' row='30' col='80'>" + this.currsongtext +"</textarea>")
                         $("#songtext").append(sbut).append(cbut);
