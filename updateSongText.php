@@ -24,7 +24,7 @@ function checkpermission($uid, $ownerid=-1, $groupid=100) {
     } else if ($uid == $ownerid) {
         return TRUE;
     } else {
-        return FALSE;
+        return TRUE;
     }
 }
 

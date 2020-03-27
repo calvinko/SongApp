@@ -17,16 +17,19 @@
     <head>    
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 
-        <!-- Optional theme -->
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+        <script
+          src="https://code.jquery.com/jquery-3.4.1.min.js"
+          integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+          crossorigin="anonymous"></script>
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+         <!-- Optional theme -->
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+         <!-- Latest compiled and minified JavaScript -->
+         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
         <link href="font-awesome-3.2.1/css/font-awesome.css" rel="stylesheet" media="screen">
         <link href="css/songapp.css" rel="stylesheet" media="screen">
        
@@ -162,7 +165,7 @@
                             var sname = $("#songtext input[name='songname']").val();
                             var relsongid = $("#songtext input[name='relsongid']").val();
                             var pagenum = $("#songtext input[name='pagenum']").val();
-                            $.post("updateSong.php", {songid: songid, songname: sname, songtext: text, pagenum: pagenum, relsongid: relsongid}, function(retdata) {
+                            $.post("updateSongText.php", {songid: songid, songname: sname, songtext: text, pagenum: pagenum, relsongid: relsongid}, function(retdata) {
                                 thisobj.songdisplaymode = "read";
                                 thisobj.reload();
                             });
@@ -172,13 +175,22 @@
                             thisobj.songdisplaymode = "read";
                             thisobj.displaySong();
                         })
-                        
+
+                        var rsidbut = $("<button class='l10 btn btn-outline-primary btn-sm'>Update</button>");
+                        rsidbut.click(function() {
+                        })
+                        var pgbut = $("<button class='l10 btn btn-outline-primary btn-sm'>Update</button>");
+                        pgbut.click(function() {
+                        })
                         var linkinput = $("<span>relsongid: </span><input name='relsongid' type='text' size='10' class=''></input>");
-                        var pagenuminput = $("<span style='margin-left: 20px'>page number: </span><input name='pagenum' type='text' size='10' class=''></input>");
+                        var pagenuminput = $("<span style='margin-left: 20px;'>page number: </span><input name='pagenum' type='text' size='10' class=''></input>");
                         linkinput.val(this.currsongrid);
                         $("#songtext").append(linkinput);
-                        $("#songtext").append(pagenoinput);
+                        $("#songtext").append(rsidbut);
+                        $("#songtext").append(pagenuminput);
+                        $("#songtext").append(pgbut);
                         $("#songtext").append(input);
+
                         $("#songtext").append("<textarea style='height:500px' class='form-control' row='30' col='80'>" + this.currsongtext +"</textarea>")
                         $("#songtext").append(sbut).append(cbut);
                     } else {
@@ -280,7 +292,7 @@
     <body>
         
         <!-- Top Navigation Bar -->
-        <div class="navbar navbar-inverse navbar-fixed-top">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
 
@@ -338,7 +350,7 @@
 
             </div>
 
-        </div>
+        </nav>
         
         <!-- Main Content -->
         

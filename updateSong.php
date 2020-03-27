@@ -50,10 +50,16 @@ if ( isset($_POST['songtext'])) {
 } else if ( isset($_GET['songtext'])) {
     $songtext = $_GET['songtext'];
 }
-if ( isset($_POST['songtext'])) {
-    $songtext = $_POST['songtext'];
-} else if ( isset($_GET['songtext'])) {
-    $songtext = $_GET['songtext'];
+if ( isset($_POST['songnum'])) {
+    $songnum = $_POST['songnum'];
+} else if ( isset($_GET['songnum'])) {
+    $songnum = $_GET['songnum'];
+}
+
+if ( isset($_POST['pagenum'])) {
+    $pagenum = $_POST['pagenum'];
+} else if ( isset($_GET['pagenum'])) {
+    $pagenum = $_GET['pagenum'];
 }
 
 
@@ -61,7 +67,9 @@ if ($mysqli == null)
         initmysqli();
 
 if (checkpermission($userid)) {
-    $sql = "UPDATE songlyrics SET songname='$songname', songtext=" . '"' . $songtext . '"' . "WHERE songid=$songid";
+    $sql = "UPDATE songlyrics SET songname='$songname', songtext=" . '"' . $songtext . '"';
+    $sql = $sql . " WHERE songid=$songid";
+    error_log("sql is " . $sql);
     $result = $mysqli->query($sql);
 
     if ($result) {
@@ -73,6 +81,11 @@ if (checkpermission($userid)) {
         $ret['sql'] = $sql;
         $ret['errormsg'] = $mysqli->error;
     }
+    if ($songnum && $pagenum) {
+        $sql1 = "UPDATE songbooktbl SET songnum=$songnum, page=$pagenum WHERE sid=$songid";
+        $mysql->query($sql1);
+    }
+
     echo json_encode($ret);
 } else {
     $ret['status'] = '0';
