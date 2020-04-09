@@ -1,4 +1,4 @@
-var bookIndexTable = [];
+var songbooks;
 
 $(document).ready(function () {
     $("#menu-mobile-control").click(function () {
@@ -89,10 +89,9 @@ $(document).ready(function () {
         //console.log("on hash change ", c);
         if (c != "") {
             fbid = parseInt(c[0]);
-            sapp.getSongBook(fbid).loadindex();
             if (c[1] != undefined) {
                 fsid = parseInt(c[1]);
-                sapp.getSongBook(fbid).showSongTextDesktop(fsid);
+                updateList(fbid).showSongTextDesktop(fsid);
             }
         }
     }
@@ -173,15 +172,16 @@ $.ajax({
     }
 })
 
-function getBookIndex(book_id) {
-    $.getJSON("get_song_index.php", {"bookid": book_id}, function (response) {
+function loadBookIndex(book_id) {
+    if (!songBooks[book_id]) {
+        $.getJSON("get_song_index.php", {"bookid": book_id}, function (response) {
+            songBooks[book_id] = {};
+            $.each(response.data, function (index, val) {
+                songBooks[book_id][index] = {songnum: val.songnum, pagenum: val.pagenum, songid: val.songid};
+            });
+        })
+    }
 
-        var bindex = {};
-        $.each(response.data, function (index, val) {
-            bindex[index] = {songnum: val.songnum, pagenum: val.pagenum, songid: val.songid};
-        });
-        bookIndexTable[bookid] = bindex;
-    })
 }
 
 //functions
@@ -192,18 +192,53 @@ function updateList(_this, book_id) {
         $('.item-skeleton').hide()
         $('.dropdown-toggle .text').text($(_this).text())
         $.each(response.data, function (index, val) {
-	page_num = '';
-	if (book_id == 31 || book_id == 32 || book_id == 33 || book_id == 34 || book_id == 120){
-	        page_num = val.page;
+	        page_num = '';
+	        if (book_id == 31 || book_id == 32 || book_id == 33 || book_id == 34 || book_id == 120){
+	            page_num = val.page;
                 if(page_num == "0")
                     page_num = val.songnum;
-
                 page_num += "."
-	}	
+	        }
             let item = `<li class="item"><a data-id="${val.songid}" href="javascript:;" onclick="updateContent(this, ${val.songid})">${page_num} ${val.songname}</a></li>`
             $('.sub-menu').append(item)
         })
     })
+}
+
+function updateContentBN(_this, book_id, songindex) {
+    $('.item-skeleton').show()
+    $('.sub-menu li.item').remove()
+    if (songBooks[book_id]) {
+        $('.item-skeleton').hide()
+        $('.dropdown-toggle .text').text($(_this).text())
+        $.each(songBooks[book_id], function(index, val) {
+            let item = `<li class="item"><a data-id="${val.songid}" href="javascript:;" onclick="updateContent(this, ${val.songid})">${val.pagenum} ${val.songname}</a></li>`
+            $('.sub-menu').append(item);
+            if (index == songindex) {
+                updateContent(item.first().get(0), val.songid);
+            }
+        })
+        updateContent(_this, songBooks[book_id][songindex].songid);
+    } else {
+        $.getJSON("get_song_index.php", {"bookid": book_id}, function (response) {
+            songBooks[book_id] = {};
+            $.each(response.data, function (index, val) {
+                var page_num = '';
+                if (book_id == 31 || book_id == 32 || book_id == 33 || book_id == 34 || book_id == 120){
+                    page_num = val.page;
+                    if(page_num == "0")
+                        page_num = val.songnum;
+                    page_num += "."
+                }
+                songBooks[book_id][index] = {songnum: val.songnum, pagenum: page_num, songid: val.songid, songname: val.songname};
+                let item = `<li class="item"><a data-id="${val.songid}" href="javascript:;" onclick="updateContent(this, ${val.songid})">${page_num} ${val.songname}</a></li>`
+                $('.sub-menu').append(item);
+                if (index == songindex) {
+                    updateContent(item.first().get(0), val.songid);
+                }
+            });
+        })
+    }
 }
 
 function updateContent(_this, song_id) {
