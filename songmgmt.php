@@ -165,7 +165,7 @@
                             var sname = $("#songtext input[name='songname']").val();
                             var relsongid = $("#songtext input[name='relsongid']").val();
                             var pagenum = $("#songtext input[name='pagenum']").val();
-                            $.post("updateSongText.php", {songid: songid, songname: sname, songtext: text, pagenum: pagenum, relsongid: relsongid}, function(retdata) {
+                            $.post("updateSongText.php", {songid: songid, songname: sname, songtext: text}, function(retdata) {
                                 thisobj.songdisplaymode = "read";
                                 thisobj.reload();
                             });
@@ -178,9 +178,17 @@
 
                         var rsidbut = $("<button class='l10 btn btn-outline-primary btn-sm'>Update</button>");
                         rsidbut.click(function() {
+                            var relsongid = $("#songtext input[name='relsongid']").val();
+                            $.post("updateSongLinked.php", {songid: songid, rsid: relsongid}, function(retdata) {
+                                var ret = $.parseJSON(retdata);
+                                console.log("return ", ret);
+                            });
                         })
                         var pgbut = $("<button class='l10 btn btn-outline-primary btn-sm'>Update</button>");
                         pgbut.click(function() {
+                            var pagenum = $("#songtext input[name='pagenum']").val();
+                            $.post("updateSongPageNum.php", {songid: songid, pagenum: pagenum}, function(retdata) {
+                            });
                         })
                         var linkinput = $("<span>relsongid: </span><input name='relsongid' type='text' size='10' class=''></input>");
                         var pagenuminput = $("<span style='margin-left: 20px;'>page number: </span><input name='pagenum' type='text' size='10' class=''></input>");
