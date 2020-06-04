@@ -7,9 +7,6 @@ if(preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|c
     //header('Location: http://detectmobilebrowser.com/mobile');
 }
 
-if ($_GET['mobile']) {
-    $mobile = true;
-}
 if ($mobile) {
     include("mindex.html");
 } else {

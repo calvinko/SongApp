@@ -1,4 +1,4 @@
-var songbooks;
+var songBooks = {};
 
 $(document).ready(function () {
     $("#menu-mobile-control").click(function () {
@@ -82,25 +82,26 @@ $(document).ready(function () {
         }
     })
 
-    window.onhashchange = function() {
+    window.onhashchange = function(e) {
         var c = window.location.hash.substr(1).split("-");
         var fbid = 11;
         var fsid = 0;
-        //console.log("on hash change ", c);
+        console.log("on hash change ", c);
         if (c != "") {
             fbid = parseInt(c[0]);
             if (c[1] != undefined) {
                 fsid = parseInt(c[1]);
-                updateList(fbid).showSongTextDesktop(fsid);
+                updateContentBN(fbid, fsid);
             }
         }
+        e.preventDefault();
     }
 
 });
 
 //get initial data
 $.ajax({
-    url: "get_book.php",
+    url: "getSongBook.php",
     context: document.body,
     data: {
         "church": "Oakland"
@@ -131,7 +132,7 @@ if (c != "") {
 }
 
 $.ajax({
-    url: "get_song_index.php",
+    url: "getSongIndex.php",
     context: document.body,
     data: {
         "bookid": fbid
@@ -142,7 +143,7 @@ $.ajax({
         window.console.log(res)
         $('.sub-menu .item-skeleton').hide()
         $.each(res.data, function (index, val) {
-            let item = `<li class="item"><a data-id="${val.songid}" href="javascript:;" onclick="updateContent(this, ${val.songid})">${val.page}. ${val.songname}</a></li>`
+            let item = `<li class="item"><a data-id="${val.songid}" href="javascript:;" onclick="window.location.hash = ${fbid} + '-' + ${index};">${val.page}. ${val.songname}</a></li>`
             $('.sub-menu').append(item)
         })
         $('.sub-menu li.item:first').addClass('active')
@@ -150,7 +151,7 @@ $.ajax({
 })
 
 $.ajax({
-    url: "get_song_text.php",
+    url: "getSongText.php",
     context: document.body,
     data: {
         "songid": fsid
@@ -174,7 +175,7 @@ $.ajax({
 
 function loadBookIndex(book_id) {
     if (!songBooks[book_id]) {
-        $.getJSON("get_song_index.php", {"bookid": book_id}, function (response) {
+        $.getJSON("getSongIndex.php", {"bookid": book_id}, function (response) {
             songBooks[book_id] = {};
             $.each(response.data, function (index, val) {
                 songBooks[book_id][index] = {songnum: val.songnum, pagenum: val.pagenum, songid: val.songid};
@@ -188,9 +189,10 @@ function loadBookIndex(book_id) {
 function updateList(_this, book_id) {
     $('.item-skeleton').show()
     $('.sub-menu li.item').remove()
-    $.getJSON("get_song_index.php", {"bookid": book_id}, function (response) {
+    $.getJSON("getSongIndex.php", {"bookid": book_id}, function (response) {
         $('.item-skeleton').hide()
-        $('.dropdown-toggle .text').text($(_this).text())
+        $('.dropdown-toggle .text').text($(_this).text());
+        songBooks[book_id] = {};
         $.each(response.data, function (index, val) {
 	        page_num = '';
 	        if (book_id == 31 || book_id == 32 || book_id == 33 || book_id == 34 || book_id == 120){
@@ -199,28 +201,30 @@ function updateList(_this, book_id) {
                     page_num = val.songnum;
                 page_num += "."
 	        }
-            let item = `<li class="item"><a data-id="${val.songid}" href="javascript:;" onclick="updateContent(this, ${val.songid})">${page_num} ${val.songname}</a></li>`
+            songBooks[book_id][index] = {songnum: val.songnum, pagenum: page_num, songid: val.songid, songname: val.songname};
+            let item = `<li class="item"><a data-id="${val.songid}" href="javascript:;" onclick="window.location.hash = ${book_id} + '-' + ${index};">${page_num} ${val.songname}</a></li>`
             $('.sub-menu').append(item)
         })
     })
 }
 
-function updateContentBN(_this, book_id, songindex) {
+function updateContentBN(book_id, songindex) {
+    console.log("BN", book_id, songindex);
     $('.item-skeleton').show()
     $('.sub-menu li.item').remove()
-    if (songBooks[book_id]) {
+    if (songBooks[book_id] != undefined) {
         $('.item-skeleton').hide()
-        $('.dropdown-toggle .text').text($(_this).text())
+        //$('.dropdown-toggle .text').text($(_this).text())
         $.each(songBooks[book_id], function(index, val) {
-            let item = `<li class="item"><a data-id="${val.songid}" href="javascript:;" onclick="updateContent(this, ${val.songid})">${val.pagenum} ${val.songname}</a></li>`
+            let item = `<li class="item"><a data-id="${val.songid}" href="javascript:;" onclick="window.location.hash = ${book_id} + '-' + ${index};">${val.pagenum} ${val.songname}</a></li>`
             $('.sub-menu').append(item);
             if (index == songindex) {
-                updateContent(item.first().get(0), val.songid);
+                updateContent($(item).first().get(0), val.songid);
             }
         })
-        updateContent(_this, songBooks[book_id][songindex].songid);
+        console.log("Done");
     } else {
-        $.getJSON("get_song_index.php", {"bookid": book_id}, function (response) {
+        $.getJSON("getSongIndex.php", {"bookid": book_id}, function (response) {
             songBooks[book_id] = {};
             $.each(response.data, function (index, val) {
                 var page_num = '';
@@ -231,27 +235,30 @@ function updateContentBN(_this, book_id, songindex) {
                     page_num += "."
                 }
                 songBooks[book_id][index] = {songnum: val.songnum, pagenum: page_num, songid: val.songid, songname: val.songname};
-                let item = `<li class="item"><a data-id="${val.songid}" href="javascript:;" onclick="updateContent(this, ${val.songid})">${page_num} ${val.songname}</a></li>`
+                let item = `<li class="item"><a data-id="${val.songid}" href="javascript:;" onclick="window.location.hash = ${book_id} + '-' + ${index};">${page_num} ${val.songname}</a></li>`
                 $('.sub-menu').append(item);
                 if (index == songindex) {
-                    updateContent(item.first().get(0), val.songid);
+                    updateContent($(item).first().get(0), val.songid);
                 }
             });
         })
     }
+    console.log("BN Return");
 }
 
 function updateContent(_this, song_id) {
+    console.log("update Content ", song_id);
     if ($('#rel-control').hasClass('active') == true) {
         $('#rel-control').removeClass('active')
         $('.main-box').removeClass('column')
     }
+
     $('.left .text').empty()
     // $('.right .text').empty()
     $('.left .skeleton').show()
     $(_this).parent().addClass('active')
     $(_this).parent().siblings().removeClass('active')
-    $.getJSON("get_song_text.php", {"songid": song_id}, function (response) {
+    $.getJSON("getSongText.php", {"songid": song_id}, function (response) {
         // window.console.log(response.relsongid)
         $('.left .skeleton').hide()
         response.relsongid > 0 && $(window).width() > 992 ? $("#rel-control").show() : $("#rel-control").hide()
@@ -266,7 +273,7 @@ function updateContent(_this, song_id) {
           $("#audio_link").hide() 
         } 
 	
-	 $('.left .title .text').append(response.songname)
+	    $('.left .title .text').append(response.songname)
         let text = response.songtext.replace(/\n/gm, "<br>")
         $('.left .content .text').append(text)
 
