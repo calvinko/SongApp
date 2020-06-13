@@ -14,12 +14,12 @@ if ( isset($_GET['bookid'])) {
 
 initmysqli();
 
-$result = $mysqli->query("SELECT bookid,songnum,pagenum,songname, songtext FROM songbooktbl join songlyrics on songbook.songid=songlyrics.songid WHERE bookid=$songbookid");
+$result = $mysqli->query("SELECT * FROM songbooktext WHERE bookid=$bookid");
 $rows = array();
 if ($result) {
-        while ( ($row = $result->fetch_assoc()) != NULL) {
-            $rows[] = $row;
-        }
+    while ( ($row = $result->fetch_assoc()) != NULL) {
+        $rows[] = $row;
+    }
 }
 $ret['status'] = '1';
 $ret['error'] = "";
