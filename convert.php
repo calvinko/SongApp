@@ -16,14 +16,52 @@ function initmysqli() {
     }
 }
 
-if ($mysqli == null)
-    initmysqli();
+//if ($mysqli == null)
+    //initmysqli();
 
+    echo "<html>\n";
     $sql = "";
     $bresult = $mysqli->query("SELECT bookid FROM booktbl");
 
+    $books = array();
+
     while ($row = $bresult->fetch_assoc()) {
-        echo $row['bookid'] . "\n";
+        //echo $row['bookid'] . "\n";
+        $books[] = $row['bookid'];
     }
 
+    foreach ($books as $bookid) {
+        echo "<p>Process $bookid </p>";
+
+        $result = $mysqli->query("SELECT * FROM songbooktbl join songlyrics on songbooktbl.songid = songlyrics.songid where songbooktbl.bookid = $bookid order by songbooktbl.songnum");
+
+        $n = 1;
+        while ($row = $result->fetch_assoc()) {
+            $songnum = $row['songnum'];
+            $songid = $row['songid'];
+            $page = $row['page'];
+            $author = $row['author'];
+            $text = $row['songtext'];
+            $songname = $row['songname'];
+            //if (strpos($text, "'")) {
+            //    echo "<p> $bookid : $songid - $songnum - $n has quote </p>";
+            //}
+            $songname = addslashes($songname);
+            if (strpos($text, '"')) {
+                echo "<p> $bookid : $songid - $songnum - $n has double quote </p>";
+                $text = addslashes($text);
+            }
+            $r1 = $mysqli->query("INSERT INTO songbooktext VALUES ($bookid, $n, $page, '$songname', '$author', '', " . '"' . $text . '"' . ", 1, '')");
+            if ($mysqli->errno != 0) {
+
+                echo "<p> return {$mysqli->error} </p>";
+            }
+
+            $n = $n + 1;
+        }
+    }
+
+    echo "</html>\n";
+
 ?>
+

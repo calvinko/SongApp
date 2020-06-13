@@ -8,12 +8,15 @@
 
 require "dbutil.php";
 
-if ( isset($_POST['bookname'])) {
-    $songbook = $_POST['bookname'];
-} else if ( isset($_GET['bookname'])) {
-    $songbook = $_GET['bookname'];
+if ( isset($_GET['bookname'])) {
+    $bookid = $_GET['bookid'];
 }
 
+if ( isset($_GET['bookname'])) {
+    $songnum = $_GET['songnum'];
+}
+
+$songid = 0;
 if ( isset($_POST['songid'])) {
     $songid = $_POST['songid'];
 } else if ( isset($_GET['songid'])) {
@@ -21,15 +24,22 @@ if ( isset($_POST['songid'])) {
 }
 
 if ($mysqli == null)
-        initmysqli();
-$result = $mysqli->query("SELECT * FROM songlyrics WHERE songid=$songid");
-    
-if ($result) {
-    $ret = $result->fetch_assoc();
-    $ret['status'] = '1';
-    echo json_encode($ret);
+    initmysqli();
+
+$ret = array();
+
+if ($songid == 0) {
+
 } else {
-    $ret['status'] = '0';
+    $result = $mysqli->query("SELECT * FROM songlyrics WHERE songid=$songid");
+
+    if ($result) {
+        $ret = $result->fetch_assoc();
+        $ret['status'] = '1';
+    } else {
+        $ret['status'] = '0';
+    }
 }
+echo json_encode($ret);
  
 ?>

@@ -7,22 +7,14 @@
 
 require "dbutil.php";
 
-if ( isset($_POST['bookname'])) {
-    $songbook = $_POST['bookname'];
-} else if ( isset($_GET['bookname'])) {
-    $songbook = $_GET['bookname'];
-}
-
-if ( isset($_POST['bookid'])) {
-    $songbookid = $_POST['bookid'];
-} else if ( isset($_GET['bookid'])) {
+if ( isset($_GET['bookid'])) {
     $songbookid = $_GET['bookid'];
 }
 
 
 initmysqli();
 
-$result = $mysqli->query("SELECT songnum,page,songname,songbook.songid,songtext FROM songbooktbl join songlyrics on songbook.songid=songlyrics.songid WHERE bookid=$songbookid");
+$result = $mysqli->query("SELECT bookid,songnum,pagenum,songname, songtext FROM songbooktbl join songlyrics on songbook.songid=songlyrics.songid WHERE bookid=$songbookid");
 $rows = array();
 if ($result) {
         while ( ($row = $result->fetch_assoc()) != NULL) {
