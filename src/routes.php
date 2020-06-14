@@ -23,6 +23,6 @@ return function (App $app) {
         return $response;
     });
 
-    $app->get('/{bookid}/[{songnum}]', 'SongBookController');
+    $app->get('/{bookid}[/{songnum}]', 'SongBookController');
 
 };
