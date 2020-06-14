@@ -1,11 +1,5 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- * 
- */
-
 require "dbutil.php";
 
 if ( isset($_POST['church'])) {

@@ -28,16 +28,16 @@ function checkpermission($uid, $ownerid=-1, $groupid=100) {
     }
 }
 
-if ( isset($_POST['bookname'])) {
-    $songbook = $_POST['bookname'];
-} else if ( isset($_GET['bookname'])) {
-    $songbook = $_GET['bookname'];
+if ( isset($_POST['bookid'])) {
+    $bookid = $_POST['bookid'];
+} else if ( isset($_GET['bookid'])) {
+    $bookid = $_GET['bookid'];
 }
 
-if ( isset($_POST['songid'])) {
-    $songid = $_POST['songid'];
-} else if ( isset($_GET['songid'])) {
-    $songid = $_GET['songid'];
+if ( isset($_POST['songnum'])) {
+    $songnum = $_POST['songnum'];
+} else if ( isset($_GET['songnum'])) {
+    $songnum = $_GET['songnum'];
 }
 
 if ( isset($_POST['songname'])) {
@@ -52,12 +52,11 @@ if ( isset($_POST['songtext'])) {
     $songtext = $_GET['songtext'];
 }
 
-
 if ($mysqli == null)
-        initmysqli();
+    initmysqli();
 
 if (checkpermission($userid)) {
-    $sql = "UPDATE songlyrics SET songname='$songname', songtext=" . '"' . $songtext . '"' . "WHERE songid=$songid";
+    $sql = "UPDATE songbooktext SET songname='$songname', songtext=" . '"' . $songtext . '"' . " WHERE bookid=$bookid and songnum=$songnum";
     $result = $mysqli->query($sql);
 
     if ($result) {
@@ -72,7 +71,7 @@ if (checkpermission($userid)) {
     echo json_encode($ret);
 } else {
     $ret['status'] = '0';
-    $ret['error'] = 'Permission Denial';
+    $ret['errormsg'] = 'Permission Denied';
     echo json_encode($ret);
 }
 ?>
