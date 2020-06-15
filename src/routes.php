@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use App\SongBookController;
+//use App\SongBookController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -23,6 +23,13 @@ return function (App $app) {
         return $response;
     });
 
-    $app->get('/{bookid}[/{songnum}]', 'SongBookController');
+    $app->get('/{bookid}[/{songnum}]', function (Request $request, Response $response, $args) {
+            $bookid = $args['bookid'];
+            $songnum = $args['songnum'];
+            $response->getBody()->write("Get Book  - $bookid -- $songnum");
+            return $response;
+        });
+
+    //$app->get('/{bookid}[/{songnum}]', 'SongBookController');
 
 };
