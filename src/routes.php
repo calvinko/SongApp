@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
+use App\SongBookController as SongBookController;
 
 return function (App $app) {
     $app->options('/{routes:.*}', function (Request $request, Response $response) {
@@ -23,13 +24,13 @@ return function (App $app) {
         return $response;
     });
 
-    $app->get('/{bookid}[/{songnum}]', function (Request $request, Response $response, $args) {
-            $bookid = $args['bookid'];
-            $songnum = $args['songnum'];
-            $response->getBody()->write("Get Book  - $bookid -- $songnum");
-            return $response;
-        });
+    //$app->get('/{bookid}[/{songnum}]', function (Request $request, Response $response, array $args) {
+    //        $bookid = $args['bookid'];
+    //        $songnum = $args['songnum'];
+    //        $response->getBody()->write("Get Book  - $bookid -- $songnum");
+    //        return $response;
+    //    });
 
-    //$app->get('/{bookid}[/{songnum}]', 'SongBookController');
+    $app->get('/{bookid}[/{songnum}]', SongBookController::class);
 
 };

@@ -5,6 +5,7 @@ namespace App;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
@@ -12,9 +13,9 @@ use Slim\Exception\HttpNotFoundException;
 class SongBookController
 {
     /**
-     * @var LoggerInterface
+     * @var ContainerInterface
      */
-    protected $logger;
+    protected $container;
 
     /**
      * @var Request
@@ -34,9 +35,9 @@ class SongBookController
     /**
      * @param LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(ContainerInterface $container)
     {
-        $this->logger = $logger;
+        $this->container = $container;
     }
 
     /**
@@ -47,13 +48,19 @@ class SongBookController
      * @throws HttpNotFoundException
      * @throws HttpBadRequestException
      */
-    public function __invoke(Request $request, Response $response, $args): Response
+    public function __invoke(Request $request, Response $response, array $args): Response
     {
         $this->request = $request;
         $this->response = $response;
         $this->args = $args;
         $bookid = $args['bookid'];
-        $response->getBody()->write("Bookid is $bookid");
-        return $reponse;
+        if (array_key_exists('songnum', $args)) {
+            $songnum = $args['songnum'];
+            $response->getBody()->write("Bookid is $bookid - Song is $songnum");
+        } else {
+            $response->getBody()->write("Bookid is $bookid");
+        }
 
+        return $response;
     }
+}
