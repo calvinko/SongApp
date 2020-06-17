@@ -19,18 +19,7 @@ return function (App $app) {
         return $response;
     });
 
-    $app->get('/book', function (Request $request, Response $response) {
-        $response->getBody()->write('Get Book!');
-        return $response;
-    });
-
-    //$app->get('/{bookid}[/{songnum}]', function (Request $request, Response $response, array $args) {
-    //        $bookid = $args['bookid'];
-    //        $songnum = $args['songnum'];
-    //        $response->getBody()->write("Get Book  - $bookid -- $songnum");
-    //        return $response;
-    //    });
-
+    $app->get('/book', SongBookController::class . ':getBooks');
     $app->get('/{bookid}[/{songnum}]', SongBookController::class);
 
 };
