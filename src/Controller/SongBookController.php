@@ -32,6 +32,8 @@ class SongBookController
      */
     protected $container;
 
+    protected $settings;
+
     /**
      * @var Request
      */
@@ -55,6 +57,7 @@ class SongBookController
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        $this->settings = $container.get("settings");
     }
 
     /**
