@@ -20,6 +20,6 @@ return function (App $app) {
     });
 
     $app->get('/book', SongBookController::class . ':getBooks');
-    $app->get('/{bookid}[/{songnum}]', SongBookController::class);
+    $app->get('/data/{bookid}[/{songnum}]', SongBookController::class);
 
 };

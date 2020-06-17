@@ -24,19 +24,20 @@ return function (ContainerBuilder $containerBuilder) {
             'db' => [
                 'host' => 'localhost',
                 'port' => 3306,
-                'schema' => 'biblcircle',
+                'dbname' => 'biblcircle',
                 'user' => 'bcircle',
                 'pass' => 'bcirclepass'
-            ]
+            ],
+            'configfile' => APP_CONFIG
     ];
 
     $settings = $defaultSettings;
 
     if (file_exists(APP_CONFIG)) {
-        $config = parse_ini_file(APP_CONFIG, false);
+        $config = parse_ini_file(APP_CONFIG, true);
         if (is_array($config)) {
-            if (isset($config['db']) && is_array($config['db'])) {
-                foreach ($config['db'] as $key => $val) {
+            if (isset($config['database']) && is_array($config['database'])) {
+                foreach ($config['database'] as $key => $val) {
                     $settings['db'][$key] = $val;
                 }
             }

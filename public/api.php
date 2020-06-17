@@ -14,12 +14,12 @@ if (false) { // Should be set to true in production
 }
 
 // Set up settings
-$settings = require __DIR__ . '/../app/settings.php';
+$settings = require __DIR__ . '/../src/settings.php';
 $settings($containerBuilder);
 
 // Set up dependencies
-$dependencies = require __DIR__ . '/../app/dependencies.php';
-$dependencies($containerBuilder);
+//$dependencies = require __DIR__ . '/../src/dependencies.php';
+//$dependencies($containerBuilder);
 // Build PHP-DI Container instance
 $container = $containerBuilder->build();
 
@@ -31,6 +31,12 @@ $app = AppFactory::create();
 $app->addRoutingMiddleware();
 
 $app->setBasePath('/songapp/api');
+
+$app->get('/debug/', function(Request $request, Response $response) {
+    $s = $this->get('settings');
+    $response->getBody()->write(json_encode($s));
+    return $response;
+});
 
 // Register routes
 $routes = require __DIR__ . '/../src/routes.php';

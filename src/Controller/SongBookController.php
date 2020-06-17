@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App;
+namespace App\Controller;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -57,7 +57,7 @@ class SongBookController
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->settings = $container.get("settings");
+        $this->settings = $container->get("settings");
     }
 
     /**
