@@ -87,13 +87,15 @@ class SongBookController
     }
 
     protected function initDB() {
-        $this->mysqli = new \mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+        //$this->mysqli = new \mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+        $db = $this->settings['db'];
+        $this->mysqli = new \mysqli($db['host'], $db['user'], $db['pass'], $db['dbname']);
         $this->mysqli->query("SET NAMES 'utf8'");
     }
 
     public function getBooks(Request $request, Response $response, array $args) : Response
     {
-        $s = json_encode($this->dbGetBook());
+        $s = json_encode($this->dbGetBooks());
         $response->getBody()->write($s);
         return $response;
     }

@@ -32,7 +32,7 @@ $app->addRoutingMiddleware();
 
 $app->setBasePath('/songapp/api');
 
-$app->get('/debug/', function(Request $request, Response $response) {
+$app->get('/debug/settings', function(Request $request, Response $response) {
     $s = $this->get('settings');
     $response->getBody()->write(json_encode($s));
     return $response;
