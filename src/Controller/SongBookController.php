@@ -76,7 +76,11 @@ class SongBookController
         $bookid = $args['bookid'];
         if (array_key_exists('songnum', $args)) {
             $songnum = $args['songnum'];
-            $dstr = json_encode($this->dbGetSong($bookid, $songnum));
+            if ($songnum == "index") {
+                $dstr = json_encode($this->dbGetBookIndex($bookid));
+            } else {
+                $dstr = json_encode($this->dbGetSong($bookid, $songnum));
+            }
             $response->getBody()->write($dstr);
         } else {
             $dstr = json_encode($this->dbGetBook($bookid));
@@ -119,6 +123,20 @@ class SongBookController
         $result = $this->mysqli->query("SELECT * FROM songbooktext WHERE bookid=$bookid");
         $rows = array();
         if ($result) {
+            while ( ($row = $result->fetch_assoc()) != NULL) {
+                $rows[] = $row;
+            }
+        }
+        return $rows;
+    }
+
+    protected function dbGetBookIndex($bookid): array
+    {
+        $this->initDB();
+        $result = $this->mysqli->query("SELECT bookid,songnum,pagenum,songname FROM songbooktext WHERE bookid=$bookid");
+        $rows = array();
+        if ($result)
+        {
             while ( ($row = $result->fetch_assoc()) != NULL) {
                 $rows[] = $row;
             }
