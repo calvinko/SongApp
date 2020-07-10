@@ -107,7 +107,7 @@ class SongBookController
     protected function dbGetBooks(): array
     {
         $this->initDB();
-        $result = $this->mysqli->query("SELECT bookid,name,attribute FROM booktbl");
+        $result = $this->mysqli->query("SELECT bookid,name,attribute FROM songbook");
         $rows = array();
         if ($result) {
             while ( ($row = $result->fetch_assoc()) != NULL) {
