@@ -12,39 +12,91 @@
     <body>
         <script>
 
+
+
+
+            function showSongText(bookname, songname, songtext, t) {
+                $("#lyricsbox .bname").html(bookname);
+                if (t == 7) {
+                    $("#lyricsbox .lyrics").html(songtext);
+                } else
+                if (getSongTextType(songtext) > 1) {
+                    $("#lyricsbox .lyrics").html("<pre style='font-size: 24px; line-height: 28px'>" + songname + "\n\n" + songtext + "</pre>");
+                } else {
+                    $("#lyricsbox .lyrics").html("<pre style='font-size: 18px; line-height: 20px'>" + songname + "\n\n" + songtext + "</pre>");
+                }
+                $(".contentbox").hide();
+                $("#lyricsbox").show();
+            }
+
+            function showSongBook(sbook) {
+                $("#booktitle").text(sbook.name);
+                data = sbook.getData();
+
+                $("#songindex").empty();
+                $.each(data, function(num, val) {
+                    let pmark = "";
+                    let attribute = 0;
+                    let elm;
+                    if (val.pagenum != '0' && attribute > 2) {
+                        pmark = $("<span style='float:right; height:32px'>p. " + val.pagenum + "</span>")
+                    }
+                    if (attribute > 0) {
+                        elm = $("<a href='#'>" + val.songnum + ". " + val.songname + "</a>");
+                    } else {
+                        elm = $("<a href='#'>" + val.songname + "</a>");
+                    }
+                    elm.append(pmark);
+                    elm.click(function(ev){
+                        showSongText(sbook.name, val.songname, val.songtext, val.type);
+                        window.location.hash = sbook.id + '-' + val.songnum;
+                        ev.preventDefault();
+                    })
+                    $("#songindex").append($("<div class='songindexentry'></div>").append(elm));
+                });
+                $(".contentbox").hide();
+                $("#songindex").show();
+
+            }
+
+
             var songstore;
             $(function() {
                 songstore = new SongStore();
                 songstore.loadBookList().then(
-                    function(store) {
-                        $.each(store.booklist, function(bid, val) {
+                    function (store) {
+                        $.each(store.getBookList(), function (bid, val) {
                             var elm = $("<a href='#'>" + val.name + "</a>");
                             elm.attr("bookid", bid);
-                            elm.click(function() {
-                                store.loadSongBook(bid);
+                            elm.click(function (ev) {
+                                store.loadSongBook(bid).then(
+                                    showSongBook
+                                );
                             });
+                            $("#m-nav-songbook").append($("<li class='songindexentry'></li>").append(elm));
+                        })
+
                     },
-                    function(store) {
+                    function (store) {
                         return;
                     }
                 );
 
-
-                $(".atab").click(function() {
+                $(".atab").click(function () {
                     var tid = $(this).attr("tid");
                     $(".contentbox").hide();
                     $("#" + tid).show();
                 })
 
-                $("#bt-prev").click(function() {
+                $("#bt-prev").click(function () {
                     songstore.currentBook.loadprev();
                 });
 
-                $("#bt-next").click(function() {
+                $("#bt-next").click(function () {
                     songstore.currentBook.loadnext();
                 });
 
-                $("#btincfont").click(function() {
+                $("#btincfont").click(function () {
                     var fontSize = $("#lyricsbox pre").css('font-size').split('px')[0];
                     var fontInt = parseInt(fontSize) + 1;
                     if (fontInt > 36) fontInt = 36;
@@ -55,7 +107,7 @@
 
                 })
 
-                 $("#btdecfont").click(function() {
+                $("#btdecfont").click(function () {
                     var fontSize = $("#lyricsbox pre").css('font-size').split('px')[0];
                     var fontInt = parseInt(fontSize) - 1;
                     if (fontInt < 10) fontInt = 10;
@@ -65,9 +117,7 @@
                     $("#lyricsbox pre").css('line-height', lineHeight + 'px');
 
                 })
-
-            })
-
+            });
       </script>
 
       <div class="ktabbar">
@@ -78,7 +128,7 @@
 
       </div>
       <div id="hymn" class="contentbox">
-          <ul id="m-nav-songbook"> style="margin: 0px">
+          <ul id="m-nav-songbook" style="margin: 0px">
           </ul>
       </div>
       <div id="songindex" style="display:none" class="contentbox">

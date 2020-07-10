@@ -30,7 +30,7 @@ $app = AppFactory::create();
 // Add Routing Middleware
 $app->addRoutingMiddleware();
 
-$app->setBasePath('/songapp/api');
+$app->setBasePath('/song/api');
 
 $app->get('/debug/settings', function(Request $request, Response $response) {
     $s = $this->get('settings');
