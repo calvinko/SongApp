@@ -8,22 +8,29 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
         <script src="js/song.js" ></script>
 
+        <style>
+
+            #lyricsbox p {
+                margin: 0px;
+            }
+        </style>
     </head>
     <body>
         <script>
 
-
-
-
             function showSongText(bookname, songname, songtext, t) {
                 $("#lyricsbox .bname").html(bookname);
                 if (t == 7) {
-                    $("#lyricsbox .lyrics").html(songtext);
-                } else
-                if (getSongTextType(songtext) > 1) {
-                    $("#lyricsbox .lyrics").html("<pre style='font-size: 24px; line-height: 28px'>" + songname + "\n\n" + songtext + "</pre>");
+                    $("#lyricsbox .lyrics").html("<div class='sbox'><h4>" + songname + "</h4>\n" + songtext);
                 } else {
-                    $("#lyricsbox .lyrics").html("<pre style='font-size: 18px; line-height: 20px'>" + songname + "\n\n" + songtext + "</pre>");
+                    $("#lyricsbox .lyrics").html("<pre class='sbox'>" + songname + "\n\n" + songtext + "</pre>");
+                }
+                if (getSongTextType(songtext) > 1) {
+                    $('#lyricsbox .sbox').css("font-size", "24px");
+                    $('#lyricsbox .sbox').css("line-height", "28px");
+                } else {
+                    $('#lyricsbox .sbox').css("font-size", "18px");
+                    $('#lyricsbox .sbox').css("line-height", "20px");
                 }
                 $(".contentbox").hide();
                 $("#lyricsbox").show();
@@ -38,7 +45,7 @@
                     let pmark = "";
                     let attribute = 0;
                     let elm;
-                    if (val.pagenum != '0' && attribute > 2) {
+                    if (val.pagenum != '0' && sbook.id == 202) {
                         pmark = $("<span style='float:right; height:32px'>p. " + val.pagenum + "</span>")
                     }
                     if (attribute > 0) {
@@ -97,24 +104,24 @@
                 });
 
                 $("#btincfont").click(function () {
-                    var fontSize = $("#lyricsbox pre").css('font-size').split('px')[0];
+                    var fontSize = $("#lyricsbox .sbox").css('font-size').split('px')[0];
                     var fontInt = parseInt(fontSize) + 1;
                     if (fontInt > 36) fontInt = 36;
                     var lineHeight = fontInt + 4;
                     fontSize = fontInt + 'px';
-                    $("#lyricsbox pre").css('font-size', fontSize);
-                    $("#lyricsbox pre").css('line-height', lineHeight + 'px');
+                    $("#lyricsbox .sbox").css('font-size', fontSize);
+                    $("#lyricsbox .sbox").css('line-height', lineHeight + 'px');
 
                 })
 
                 $("#btdecfont").click(function () {
-                    var fontSize = $("#lyricsbox pre").css('font-size').split('px')[0];
+                    var fontSize = $("#lyricsbox .sbox").css('font-size').split('px')[0];
                     var fontInt = parseInt(fontSize) - 1;
                     if (fontInt < 10) fontInt = 10;
                     var lineHeight = fontInt + 4;
                     fontSize = fontInt + 'px';
-                    $("#lyricsbox pre").css('font-size', fontSize);
-                    $("#lyricsbox pre").css('line-height', lineHeight + 'px');
+                    $("#lyricsbox .sbox").css('font-size', fontSize);
+                    $("#lyricsbox .sbox").css('line-height', lineHeight + 'px');
 
                 })
             });

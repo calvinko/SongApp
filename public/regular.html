@@ -91,13 +91,13 @@
                 let pmark = "";
                 let attribute = 0;
                 let elm;
-                if (val.pagenum != '0' && attribute > 2) {
-                    pmark = $("<span style='float:right; height:32px'>p. " + val.pagenum + "</span>")
+                if (val.pagenum != '0' && sbook.id == 202) {
+                    pmark = $("<span style='float:right; height:32px;'>p. " + val.pagenum + "</span>")
                 }
                 if (attribute > 0) {
-                    elm = $("<a href='#'>" + val.songnum + ". " + val.songname + "</a>");
+                    elm = $("<a href='#'><span style='float: left; width:80%;height:32px;text-overflow:ellipsis'>" + val.songnum + ". " + val.songname + "</span></a>");
                 } else {
-                    elm = $("<a href='#'>" + val.songname + "</a>");
+                    elm = $("<a href='#'><span class='sname'>" + val.songname + "</span></a>");
                 }
                 elm.append(pmark);
                 elm.click(function(ev){
@@ -254,10 +254,10 @@
 
 
         </div>
-        <div id="songindexpane" style="height: 800px" class="col-md-3">
+        <div id="songindexpane" style="height: 800px" class="col-md-4">
             <div id="desktopsongindex"></div>
         </div>
-        <div id="dt-pane1" class="col-md-9 panel panel-default">
+        <div id="dt-pane1" class="col-md-8 panel panel-default">
             <div class="">
                 <div class="ncol col-md-7"></div>
                 <div class="bcol col-md-5">

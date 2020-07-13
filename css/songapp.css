@@ -78,6 +78,14 @@ li.songindexentry {
     background-color: lightcyan;
 }
 
+.songindexentry .sname {
+    float: left;
+    width:84%;
+    height:32px;
+    overflow: hidden;
+    text-overflow:ellipsis
+}
+
 .active {
     background-color: lightgray;
 }

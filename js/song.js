@@ -36,7 +36,7 @@ function SongStore() {
         let p = new Promise(function (resolve, reject) {
             $.get("/song/api/book/" + bookid, function(retdata) {
                 var ret = $.parseJSON(retdata);
-                books[bookid] = new SongBook(bookid, booklist[bookid].name);
+                books[bookid] = new SongBook(bookid, booklist[bookid]);
                 books[bookid].loadData(ret);
                 resolve(books[bookid]);
             }).fail(function() {
@@ -51,12 +51,14 @@ function SongStore() {
     }
 }
 
-function SongBook(id, name) {
+function SongBook(id, val) {
 
     let songs = {};
     var myid = id;
     this.id = id;
-    this.name = name;
+    this.name = val.name;
+    this.attribute = val.attribute;
+
 
     this.loadData = function(ret) {
         $.each(ret, function(index, val) {
