@@ -11,7 +11,7 @@ function getSongTextType(stext) {
 
 function SongStore() {
 
-    var booklist = {};
+    var booklist = null;
     var books = {};
     var me = this;
     this.loadBookList = function() {
@@ -30,6 +30,25 @@ function SongStore() {
     };
     this.getBookList = function() {
         return booklist;
+    }
+
+    this.getbooks = function() {
+        let pm = new Promise(function(resolve, reject) {
+            if (booklist == null) {
+                $.get("/song/api/books", function(retdata) {
+                    var ret = $.parseJSON(retdata);
+                    $.each(ret, function(index, val) {
+                        booklist[val.bookid] = new SongBook(val.id, val)
+                    });
+                    resolve(booklist);
+                }).fail(function() {
+                    reject();
+                });
+            } else {
+                resolve(booklist);
+            }
+        });
+        return pm;
     }
 
     this.loadSongBook = function(bookid) {
@@ -55,20 +74,24 @@ function SongBook(id, val) {
 
     let songs = {};
     var myid = id;
+    var value = val;
     this.id = id;
     this.name = val.name;
     this.attribute = val.attribute;
 
+    this.getContent = function() {
+
+    };
 
     this.loadData = function(ret) {
         $.each(ret, function(index, val) {
             songs[val.songnum] = val;
         });
-    }
+    };
 
     this.getSongData = function(songnum) {
         return songs[songnum];
-    }
+    };
 
     this.getData = function() {
         return songs;

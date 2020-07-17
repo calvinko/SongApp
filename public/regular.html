@@ -33,7 +33,6 @@
         }
 
         #songindexpane {
-            height: 760px;
             overflow: scroll;
             display:block;
         }
@@ -59,12 +58,12 @@
         }
 
         function changefontsize(pane, unit) {
-            var fontSize = pane.find(".songtext pre").css('font-size').split('px')[0];
+            var fontSize = pane.find(".songtext .sbox").css('font-size').split('px')[0];
             var fontInt = parseInt(fontSize) + unit;
             var lineHeight = fontInt + 4;
             fontSize = fontInt + 'px';
-            pane.find(".songtext pre").css('font-size', fontSize);
-            pane.find(".songtext pre").css('line-height', lineHeight + 'px');
+            pane.find(".songtext .sbox").css('font-size', fontSize);
+            pane.find(".songtext .sbox").css('line-height', lineHeight + 'px');
         }
 
         function showsongindexpanel() {
@@ -76,11 +75,17 @@
             $("#desktopsongtext").empty();
             $("#dt-pane1 .ncol").html("<h3>" + songname + "</h3>");
             if (t == 7) {
-                $("#desktopsongtext").append(songtext);
+                $("#desktopsongtext").html("<div class='sbox'>" + songtext + "</div>");
             } else {
-                $("#desktopsongtext").append("<pre style='font-size: 26px; line-height:30px;'>" + songtext + "</pre>");
+                $("#desktopsongtext").append("<pre class= 'sbox'>" + songtext + "</pre>");
             }
-
+            if (getSongTextType(songtext) > 1) {
+                $('.sbox').css("font-size", "24px");
+                $('.sbox').css("line-height", "28px");
+            } else {
+                $('.sbox').css("font-size", "18px");
+                $('.sbox').css("line-height", "20px");
+            }
         }
 
         function showSongBook(sbook) {
@@ -127,17 +132,17 @@
                             ev.preventDefault();
                         });
                         $("#nav-songbook").append($("<li></li>").append(elm));
-                    })
-                    store.loadSongBook(11).then(
-                        showSongBook,
-                        function (sbook) {
-
-                        }
+                    });
+                    let c = window.location.hash.substr(1).split("-");
+                    var fbid = 11;
+                    var fsid = 0;
+                    //console.log("on hash change ", c);
+                    if (c != "") {
+                        var fbid = parseInt(c[0]);
+                    }
+                    songstore.loadSongBook(fbid).then(
+                        showSongBook
                     );
-
-                },
-                function (store) {
-                        return;
                 }
             );
 
@@ -202,11 +207,13 @@
                 //console.log("on hash change ", c);
                 if (c != "") {
                     fbid = parseInt(c[0]);
-                    sapp.getSongBook(fbid).loadindex();
-                    if (c[1] != undefined) {
-                        fsid = parseInt(c[1]);
-                        sapp.getSongBook(fbid).showSongTextDesktop(fsid);
-                    }
+                    songstore.loadSongBook(fbid).then(
+                        showSongBook
+                    );
+                } else {
+                    songstore.loadSongBook(11).then(
+                        showSongBook
+                    );
                 }
             }
 
@@ -254,7 +261,7 @@
 
 
         </div>
-        <div id="songindexpane" style="height: 800px" class="col-md-4">
+        <div id="songindexpane" class="col-md-4">
             <div id="desktopsongindex"></div>
         </div>
         <div id="dt-pane1" class="col-md-8 panel panel-default">
