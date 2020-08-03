@@ -41,9 +41,9 @@ function SongStore() {
         let pm = new Promise(function(resolve, reject) {
             if (booklist == null) {
                 $.get("/song/api/books", function(retdata) {
-                    var ret = $.parseJSON(retdata);
+                    booklist = $.parseJSON(retdata);
                     $.each(ret, function(index, val) {
-                        booklist[val.bookid] = new SongBook(val.id, val)
+                        booktbl[val.bookid] = new SongBook(val.id, val)
                     });
                     resolve(booklist);
                 }).fail(function() {
