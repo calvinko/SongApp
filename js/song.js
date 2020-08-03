@@ -12,7 +12,7 @@ function getSongTextType(stext) {
 function SongStore() {
 
     var booklist = null;
-    var booktbl = null;
+    var booktbl = {};
     var books = {};
     var me = this;
     this.loadBookList = function() {
