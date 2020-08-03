@@ -60,7 +60,7 @@ function SongStore() {
         let p = new Promise(function (resolve, reject) {
             $.get("/song/api/book/" + bookid, function(retdata) {
                 var ret = $.parseJSON(retdata);
-                books[bookid] = new SongBook(bookid, booklist[bookid]);
+                books[bookid] = new SongBook(bookid, booktbl[bookid]);
                 books[bookid].loadData(ret);
                 resolve(books[bookid]);
             }).fail(function() {
