@@ -19,7 +19,7 @@ function SongStore() {
         let pm = new Promise(function(resolve, reject) {
             $.get("/song/api/books", function(retdata) {
                 booklist = $.parseJSON(retdata);
-                $.each(ret, function(index, val) {
+                $.each(booklist, function(index, val) {
                     booktbl[val.bookid] = val;
                 });
                 resolve(me);
