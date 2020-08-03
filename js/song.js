@@ -12,14 +12,15 @@ function getSongTextType(stext) {
 function SongStore() {
 
     var booklist = null;
+    var booktbl = null;
     var books = {};
     var me = this;
     this.loadBookList = function() {
         let pm = new Promise(function(resolve, reject) {
             $.get("/song/api/books", function(retdata) {
-                var ret = $.parseJSON(retdata);
+                booklist = $.parseJSON(retdata);
                 $.each(ret, function(index, val) {
-                    booklist[val.bookid] = val;
+                    booktbl[val.bookid] = val;
                 });
                 resolve(me);
             }).fail(function() {
@@ -30,6 +31,10 @@ function SongStore() {
     };
     this.getBookList = function() {
         return booklist;
+    }
+
+    this.getBookTbl = function() {
+        return booktbl;
     }
 
     this.getbooks = function() {

@@ -128,11 +128,11 @@
                 function (store) {
                     $.each(store.getBookList(), function (bid, val) {
                         let elm = $("<a href='#'>" + val.name + "</a>");
-                        elm.attr("bookid", bid);
+                        elm.attr("bookid", val.bookid);
                         elm.click(function(ev) {
                             //window.location.hash = bid;
                             $("#booktitle").text(val.name);
-                            store.loadSongBook(bid).then(
+                            store.loadSongBook(val.bookid).then(
                                 showSongBook
                             )
                             ev.preventDefault();
