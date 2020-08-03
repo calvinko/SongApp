@@ -53,11 +53,11 @@ li.songindexentry {
 
     border-top: 1px solid black;
     text-overflow: ellipsis;
-    overflow: hidden;
+    overflow-y: scroll;
     font-size: 120%;
     float: left;
     width: 98%;
-
+    height: 80vh;
 }
 .songindexentry a {
     color: black;
