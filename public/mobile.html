@@ -74,9 +74,9 @@
                     function (store) {
                         $.each(store.getBookList(), function (bid, val) {
                             var elm = $("<a href='#'>" + val.name + "</a>");
-                            elm.attr("bookid", bid);
+                            elm.attr("bookid", val.bookid);
                             elm.click(function (ev) {
-                                store.loadSongBook(bid).then(
+                                store.loadSongBook(val.bookid).then(
                                     showSongBook
                                 );
                             });
