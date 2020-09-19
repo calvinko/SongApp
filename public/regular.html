@@ -185,6 +185,7 @@
                     $("#dt-pane1").removeClass("col-sm-6");
                     $("#dt-pane1").addClass("col-md-12");
                     $("#dt-pane1").addClass("col-sm-12");
+                    $("#dt-pane2").hide();
                     
                 } else {
                     $("#songindexpane").toggle();
@@ -205,10 +206,12 @@
                 if ($("#dt-pane2").is(":visible")) {
                     $("#dt-pane2").hide();
                     $("#dt-pane1").addClass("col-md-12");
+                    $("#dt-pane1").removeClass("col-md-8");
                     $("#dt-pane1").removeClass("col-md-6");
                 } else {
                     $("#songindexpane").hide();
                     $("#dt-pane1").removeClass("col-md-12");
+                    $("#dt-pane1").removeClass("col-md-8");
                     $("#dt-pane1").addClass("col-md-6");
                     $("#dt-pane2").show();
 
@@ -270,7 +273,7 @@
 
             <div class="btn-group">
                 <button id="btn-toggleindex" class="btn btn-default"><i class="fa fa-caret-square-o-left"></i></button>
-                <button id="btn-togglepane" class="btn btn-default"><i class="fa fa-columns"></i></button>
+                <button id="btn-togglepane" class="btn btn-default visible-lg visible-md"><i class="fa fa-columns"></i></button>
                 <button id="btn-copypane" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
             </div>
 
