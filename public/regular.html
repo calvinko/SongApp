@@ -181,8 +181,17 @@
             $("#btn-toggleindex").click(function() {
                 if ($("#songindexpane").is(":visible")) {
                     $("#songindexpane").toggle();
+                    $("#dt-pane1").removeClass("col-md-8");
+                    $("#dt-pane1").removeClass("col-sm-6");
+                    $("#dt-pane1").addClass("col-md-12");
+                    $("#dt-pane1").addClass("col-sm-12");
+                    
                 } else {
                     $("#songindexpane").toggle();
+                    $("#dt-pane1").removeClass("col-md-12");
+                    $("#dt-pane1").addClass("col-md-8");
+                    $("#dt-pane1").removeClass("col-sm-12");
+                    $("#dt-pane1").addClass("col-sm-6");
                     $("#dt-pane2").hide();
                 }
 
@@ -195,11 +204,11 @@
             $("#btn-togglepane").click(function() {
                 if ($("#dt-pane2").is(":visible")) {
                     $("#dt-pane2").hide();
-                    $("#dt-pane1").addClass("col-md-8");
+                    $("#dt-pane1").addClass("col-md-12");
                     $("#dt-pane1").removeClass("col-md-6");
                 } else {
                     $("#songindexpane").hide();
-                    $("#dt-pane1").removeClass("col-md-8");
+                    $("#dt-pane1").removeClass("col-md-12");
                     $("#dt-pane1").addClass("col-md-6");
                     $("#dt-pane2").show();
 
@@ -267,7 +276,7 @@
 
 
         </div>
-        <div id="songindexpane" class="col-md-4">
+        <div id="songindexpane" class="col-md-4 col-sm-6">
             <div id="desktopsongindex"></div>
         </div>
         <div id="dt-pane1" class="col-md-8 panel panel-default">
@@ -288,7 +297,7 @@
 
             </div>
         </div>
-        <div id="dt-pane2" style="display:none" class="col-md-6 panel panel-default">
+        <div id="dt-pane2" style="display:none" class="col-md-8 col-sm-6 panel panel-default">
             <div class="">
                 <div class="ncol col-md-8"></div>
                 <div class="bcol col-md-4">
