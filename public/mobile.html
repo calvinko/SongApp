@@ -16,7 +16,9 @@
             }
 
             #rsong {
-                display:none;
+                display: none;
+                padding: 5px;
+                font-size: 20px;
             }
         </style>
     </head>
@@ -43,7 +45,7 @@
                 $("#lyricsbox").show();
             }
 
-            function showRelSong(rsong) {
+            function updateRelSong(rsong) {
                 console.log("rsong is ", rsong);
                 if (rsong.indexOf(':') > -1) {
                     var items = rsong.split(":");
@@ -52,8 +54,11 @@
                     songstore.loadSongBook(bookid).then(
                         function(sbook) {
                             var s = sbook.getSongData(songnum);
-                            $("#rsong").show();
-                            $("#rsong").html(s.songname);
+                            $("#rsong").empty();
+                            $("#rsong").append("<button class='btn'>" + s.songname + "</button>");
+                            $("#rsong button").click(function() {
+
+                            });
                         }
                     );
                 }
@@ -81,6 +86,7 @@
                         showSongText(sbook.name, val.songname, val.songtext, val.type);
                         window.location.hash = sbook.id + '-' + val.songnum;
                         rsong = val.rsong;
+                        updateRelSong(val.rsong);
                         ev.preventDefault();
                     })
                     $("#songindex").append($("<div class='songindexentry'></div>").append(elm));
@@ -154,7 +160,7 @@
                     if ($("#rsong").is(":visible")) {
                         $("#rsong").hide();
                     } else {
-                        showRelSong(rsong);
+                        $("#rsong").show();
                     }
                 });
             });
@@ -177,8 +183,6 @@
       <div id="lyricsbox" style="display:none" class="contentbox">
           <div class='stitle'>
               <div class='bname'>SongBook</div>
-              
-              
               <div class='btn-group fontctrl'>
                   <a id="bt-rsonginfo" class="btn"><i class="icon-info-sign"></i></a>   
                   <a id="bt-prev" class="btn"><i class="icon-arrow-left"></i></a>
@@ -188,7 +192,7 @@
               </div>
           </div>
           <div id="rsong">
-
+                
           </div>
           <div class="lyrics">
           </div>
