@@ -77,9 +77,15 @@
             $("#dt-pane2").hide();
         }
 
-        function showSongText(songname, songtext, t) {
+        function showSongText(songname, songtext, t, tag) {
             $("#desktopsongtext").empty();
             $("#dt-pane1 .ncol").html("<h3>" + songname + "</h3>");
+            if (tag) {
+                $("#btn-relsong span").text(tag);
+            } else {
+                $("#btn-relsong span").text("");
+            }
+            
             if (t == 7) {
                 $("#desktopsongtext").html("<div class='sbox'>" + songtext + "</div>");
             } else {
@@ -91,6 +97,22 @@
             } else {
                 $('.sbox').css("font-size", "18px");
                 $('.sbox').css("line-height", "20px");
+            }
+        }
+
+        function showRelSong(rsong) {
+            console.log("rsong is ", rsong);
+            if (rsong.indexOf(':') > -1) {
+                var items = rsong.split(":");
+                var bookid = parseInt(items[0]);
+                var songnum = parseInt(items[1]);
+                songstore.loadSongBook(bookid).then(
+                    function(sbook) {
+                        var s = sbook.getSongData(songnum);
+                        $("#btn-relsong span").html(s.songname);
+                    }
+                        
+                );
             }
         }
 
@@ -112,7 +134,8 @@
                 }
                 elm.append(pmark);
                 elm.click(function(ev){
-                    showSongText(val.songname, val.songtext, val.type);
+                    showSongText(val.songname, val.songtext, val.type, val.tag);
+                    showRelSong(val.rsong);
                     window.location.hash = sbook.id + '-' + val.songnum;
                     ev.preventDefault();
                 })
@@ -122,6 +145,8 @@
         }
 
         var songstore;
+
+
         $(function() {
             songstore = new SongStore();
             songstore.loadBookList().then(
@@ -270,12 +295,7 @@
 <div class="container visible-lg visible-md visible-sm">
     <div style="max-width:1400px" class="row">
         <div style="padding-top:12px; padding-bottom: 5px" class="col-md-12">
-
-            <div class="btn-group">
-                <button id="btn-toggleindex" class="btn btn-default"><i class="fa fa-caret-square-o-left"></i></button>
-                <button id="btn-togglepane" class="btn btn-default visible-lg visible-md"><i class="fa fa-columns"></i></button>
-                <button id="btn-copypane" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
-            </div>
+            
 
 
         </div>
@@ -284,16 +304,24 @@
         </div>
         <div id="dt-pane1" class="col-md-8 panel panel-default">
             <div class="">
-                <div class="ncol col-md-7"></div>
-                <div class="bcol col-md-5">
+                <div class="bcol col-md-12">
                     <div class="btn-group">
+                        <button id="btn-toggleindex" class="btn btn-default"><i class="fa fa-list"></i></button>
                         <button id="btn-incfont1" class="btn btn-default"><i class="fa fa-search-plus"></i></button>
                         <button id="btn-decfont1" class="btn btn-default"><i class="fa fa-search-minus"></i></button>
+                        
+                    </div>
+                    <div class="btn-group">
+                        <button id="btn-togglepane" class="btn btn-default visible-lg visible-md"><i class="fa fa-columns"></i></button>
+                        <button id="btn-copypane" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
+                        <button id="btn-relsong" class="btn btn-default"><i class="fa fa-bookmark"></i><span style="margin-left: 6px">1234</span></button>
                     </div>
                     <div class="linkgp btn-group">
 
                     </div>
                 </div>
+                <div class="ncol col-md-12"></div>
+                
 
             </div>
             <div id="desktopsongtext" style="font-size: 26px; min-height:600px" class="songtext panel-body col-md-12">

@@ -108,7 +108,7 @@ li.songindexentry {
 
 .stitle {
     width:99%;
-    height: 50px;
+    min-height: 50px;
 }
 
 .bname {

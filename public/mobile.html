@@ -6,12 +6,17 @@
         <link href="css/font-awesome.css" rel="stylesheet" media="screen">
         <link href="css/songapp.css" rel="stylesheet" media="screen">
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
         <script src="js/song.js" ></script>
 
         <style>
 
             #lyricsbox p {
                 margin: 0px;
+            }
+
+            #rsong {
+                display:none;
             }
         </style>
     </head>
@@ -22,7 +27,9 @@
                 $("#lyricsbox .bname").html(bookname);
                 if (t == 7) {
                     $("#lyricsbox .lyrics").html("<div class='sbox'><h4>" + songname + "</h4>\n" + songtext + "</div>");
+                    $("#songname").html("<h4>" + songname + "</h4>");
                 } else {
+                    $("#songname").html("<h4>" + songname + "</h4>");
                     $("#lyricsbox .lyrics").html("<pre class='sbox'>" + songname + "\n\n" + songtext + "</pre>");
                 }
                 if (getSongTextType(songtext) > 1) {
@@ -34,6 +41,22 @@
                 }
                 $(".contentbox").hide();
                 $("#lyricsbox").show();
+            }
+
+            function showRelSong(rsong) {
+                console.log("rsong is ", rsong);
+                if (rsong.indexOf(':') > -1) {
+                    var items = rsong.split(":");
+                    var bookid = parseInt(items[0]);
+                    var songnum = parseInt(items[1]);
+                    songstore.loadSongBook(bookid).then(
+                        function(sbook) {
+                            var s = sbook.getSongData(songnum);
+                            $("#rsong").show();
+                            $("#rsong").html(s.songname);
+                        }
+                    );
+                }
             }
 
             function showSongBook(sbook) {
@@ -57,6 +80,7 @@
                     elm.click(function(ev){
                         showSongText(sbook.name, val.songname, val.songtext, val.type);
                         window.location.hash = sbook.id + '-' + val.songnum;
+                        rsong = val.rsong;
                         ev.preventDefault();
                     })
                     $("#songindex").append($("<div class='songindexentry'></div>").append(elm));
@@ -68,6 +92,7 @@
 
 
             var songstore;
+            var rsong = "";
             $(function() {
                 songstore = new SongStore();
                 songstore.loadBookList().then(
@@ -124,6 +149,14 @@
                     $("#lyricsbox .sbox").css('line-height', lineHeight + 'px');
 
                 })
+
+                $("#bt-rsonginfo").click(function () {
+                    if ($("#rsong").is(":visible")) {
+                        $("#rsong").hide();
+                    } else {
+                        showRelSong(rsong);
+                    }
+                });
             });
       </script>
 
@@ -144,12 +177,18 @@
       <div id="lyricsbox" style="display:none" class="contentbox">
           <div class='stitle'>
               <div class='bname'>SongBook</div>
+              
+              
               <div class='btn-group fontctrl'>
+                  <a id="bt-rsonginfo" class="btn"><i class="icon-info-sign"></i></a>   
                   <a id="bt-prev" class="btn"><i class="icon-arrow-left"></i></a>
                   <a style="margin-right: 5px;" id="bt-next" class="btn"><i class="icon-arrow-right"></i></a>
                   <a id ="btincfont" class="btn"><i class="icon-font"></i><i class="icon-caret-up"></i></a>
                   <a id ="btdecfont" class="btn"><i class="icon-font"></i><i class="icon-caret-down"></i></a>
               </div>
+          </div>
+          <div id="rsong">
+
           </div>
           <div class="lyrics">
           </div>
