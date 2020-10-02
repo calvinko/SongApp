@@ -136,6 +136,8 @@
                 elm.click(function(ev){
                     showSongText(val.songname, val.songtext, val.type, val.tag);
                     showRelSong(val.rsong);
+                    cbookid = sbook.id;
+                    csongnum = val.songnum;
                     window.location.hash = sbook.id + '-' + val.songnum;
                     ev.preventDefault();
                 })
@@ -145,7 +147,8 @@
         }
 
         var songstore;
-
+        var cbookid = 10;
+        var csongnum = 0;
 
         $(function() {
             songstore = new SongStore();
@@ -243,15 +246,20 @@
                 }
             });
 
-            window.onhashchange = function() {
+            window.onpopstate = function() {
                 var c = window.location.hash.substr(1).split("-");
                 var fbid = 11;
                 var fsid = 0;
                 //console.log("on hash change ", c);
                 if (c != "") {
                     fbid = parseInt(c[0]);
-                    songstore.loadSongBook(fbid).then(
-                        showSongBook
+                    fsid = parseInt(c[1]);
+                    songstore.loadSongBook(fbid).then (
+                        function(sbook) {
+                            showSongBook(sbook);
+                            var val = sbook.getSongData(fsid);
+                            showSongText(val.songname, val.songtext, val.type, val.tag);
+                        }
                     );
                 } else {
                     songstore.loadSongBook(11).then(
@@ -259,8 +267,8 @@
                     );
                 }
             }
-
         })
+
     </script>
 </head>
 <body>
