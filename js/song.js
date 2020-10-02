@@ -14,6 +14,7 @@ function SongStore() {
     var booklist = null;
     var booktbl = {};
     var books = {};
+    var currBookId = 10;
     var me = this;
     this.loadBookList = function() {
         let pm = new Promise(function(resolve, reject) {
@@ -73,13 +74,20 @@ function SongStore() {
     this.getSongBook = function(bookid) {
         return books[bookid];
     }
+
+    this.getCurrentBook = function() {
+        return this.getSongBook(currBookId);
+    }
 }
 
 function SongBook(id, val) {
 
     let songs = {};
+    let sdata = null;
     var myid = id;
     var value = val;
+    var maxIndex = 1;
+    var currentIndex = 1;
     this.id = id;
     this.name = val.name;
     this.attribute = val.attribute;
@@ -89,12 +97,30 @@ function SongBook(id, val) {
     };
 
     this.loadData = function(ret) {
+        sdata = ret;
         $.each(ret, function(index, val) {
+            val.index = index;
             songs[val.songnum] = val;
+            maxIndex = index;
         });
     };
 
+    this.getNextSong = function() {
+        if (currentIndex < maxIndex) {
+            currentIndex = currentIndex + 1;
+        }
+        return sdata[currentIndex];
+    }
+
+    this.getPrevSong = function() {
+        if (currentIndex > 0) {
+            currentIndex = currentIndex - 1;
+        }
+        return sdata[currentIndex];
+    }
+
     this.getSongData = function(songnum) {
+        currentIndex = songs[songnum].index;
         return songs[songnum];
     };
 

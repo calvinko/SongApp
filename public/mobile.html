@@ -97,7 +97,7 @@
                     elm.click(function(ev){
                         showSongText(sbook.name, val.songname, val.songtext, val.type);
                         window.location.hash = sbook.id + '-' + val.songnum;
-                        rsong = val.rsong;
+                        csnum = val.songnum;
                         updateRelSong(val.rsong);
                         ev.preventDefault();
                     })
@@ -110,7 +110,7 @@
 
 
             var songstore;
-            var rsong = "";
+            var csnum = 0;
             $(function() {
                 songstore = new SongStore();
                 songstore.loadBookList().then(
@@ -139,10 +139,12 @@
                 })
 
                 $("#bt-prev").click(function () {
-                    songstore.currentBook.loadprev();
+                    var b = songstore.getCurrentBook();
+                    b.loadprev();
                 });
 
                 $("#bt-next").click(function () {
+                    var b = songstore.getCurrentBook();
                     songstore.currentBook.loadnext();
                 });
 
