@@ -126,7 +126,9 @@ li.songindexentry {
 }
 
 .lyrics {
-    width: 98%
+    width: 98%;
+    display: block;
+    float: left;
 }
 
 div.lyrics pre {

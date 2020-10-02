@@ -102,6 +102,7 @@
                         window.location.hash = sbook.id + '-' + val.songnum;
                         csnum = val.songnum;
                         updateRelSong(val.rsong);
+                        sbook.getSongData(val.songnum);
                         ev.preventDefault();
                     })
                     $("#songindex").append($("<div class='songindexentry'></div>").append(elm));
@@ -122,6 +123,7 @@
                             var elm = $("<a href='#'>" + val.name + "</a>");
                             elm.attr("bookid", val.bookid);
                             elm.click(function (ev) {
+                                songstore.setCurrentBook(val.bookid);
                                 store.loadSongBook(val.bookid).then(
                                     showSongBook
                                 );
@@ -201,12 +203,14 @@
       <div id="lyricsbox" style="display:none" class="contentbox">
           <div class='stitle'>
               <div class='bname'>SongBook</div>
-              <div class='btn-group fontctrl'>
+              <div class='fontctrl'>
+                <div class='btn-group'>
                   <a id="bt-rsonginfo" class="btn"><i class="icon-info-sign"></i></a>   
                   <a id="bt-prev" class="btn"><i class="icon-arrow-left"></i></a>
                   <a style="margin-right: 5px;" id="bt-next" class="btn"><i class="icon-arrow-right"></i></a>
                   <a id ="btincfont" class="btn"><i class="icon-font"></i><i class="icon-caret-up"></i></a>
                   <a id ="btdecfont" class="btn"><i class="icon-font"></i><i class="icon-caret-down"></i></a>
+                </div>
               </div>
           </div>
           <div id="rsong">

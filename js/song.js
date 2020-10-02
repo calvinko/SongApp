@@ -63,7 +63,6 @@ function SongStore() {
                 var ret = $.parseJSON(retdata);
                 books[bookid] = new SongBook(bookid, booktbl[bookid]);
                 books[bookid].loadData(ret);
-                currBookId = bookid;
                 resolve(books[bookid]);
             }).fail(function() {
                 reject(me);
@@ -74,6 +73,10 @@ function SongStore() {
 
     this.getSongBook = function(bookid) {
         return books[bookid];
+    }
+
+    this.setCurrentBook = function(bookid) {
+        currBookId = bookid;
     }
 
     this.getCurrentBook = function() {
@@ -124,6 +127,10 @@ function SongBook(id, val) {
         currentIndex = songs[songnum].index;
         return songs[songnum];
     };
+
+    this.setCurrSong = function(songnum) {
+        currentIndex = songs[songnum].index;
+    }
 
     this.getData = function() {
         return songs;
