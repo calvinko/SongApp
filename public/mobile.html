@@ -37,7 +37,10 @@
             }
 
             function showSongText(bookname, songname, songtext, t) {
-                $("#lyricsbox .bname").html(bookname);
+                if (bookname != "") {
+                    $("#lyricsbox .bname").html(bookname);
+                }
+                
                 if (t == 7) {
                     $("#lyricsbox .lyrics").html("<div class='sbox'><h4>" + songname + "</h4>\n" + songtext + "</div>");
                     $("#songname").html("<h4>" + songname + "</h4>");
@@ -139,13 +142,14 @@
                 })
 
                 $("#bt-prev").click(function () {
-                    var b = songstore.getCurrentBook();
-                    b.loadprev();
+                    var val = songstore.getCurrentBook().getPrevSong();
+                    showSongText("", val.songname, val.songtext, val.type);
                 });
 
                 $("#bt-next").click(function () {
                     var b = songstore.getCurrentBook();
-                    songstore.currentBook.loadnext();
+                    var val = b.getNextSong();
+                    showSongText(b.name, val.songname, val.songtext, val.type);
                 });
 
                 $("#btincfont").click(function () {

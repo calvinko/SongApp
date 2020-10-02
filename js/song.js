@@ -63,6 +63,7 @@ function SongStore() {
                 var ret = $.parseJSON(retdata);
                 books[bookid] = new SongBook(bookid, booktbl[bookid]);
                 books[bookid].loadData(ret);
+                currBookId = bookid;
                 resolve(books[bookid]);
             }).fail(function() {
                 reject(me);
