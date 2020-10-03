@@ -80,11 +80,6 @@
         function showSongText(songname, songtext, t, tag) {
             $("#desktopsongtext").empty();
             $("#dt-pane1 .ncol").html("<h3>" + songname + "</h3>");
-            if (tag) {
-                $("#btn-relsong span").text(tag);
-            } else {
-                $("#btn-relsong span").text("");
-            }
             
             if (t == 7) {
                 $("#desktopsongtext").html("<div class='sbox'>" + songtext + "</div>");
@@ -100,6 +95,18 @@
             }
         }
 
+        function goToSong(bookid, songnum) {
+            songstore.loadSongBook(bookid).then (
+                function(sbook) {
+                            showSongBook(sbook);
+                            var val = sbook.getSongData(songnum);
+                            showSongText(val.songname, val.songtext, val.type, val.tag);
+                            showRelSong(val.rsong);
+                            history.pushState({}, "", "http://" + window.location.hostname + window.location.pathname + "#" + sbook.id + '-' + val.songnum);
+                }
+            );
+        }
+
         function showRelSong(rsong) {
             console.log("rsong is ", rsong);
             if (rsong.indexOf(':') > -1) {
@@ -110,8 +117,14 @@
                     function(sbook) {
                         var s = sbook.getSongData(songnum);
                         $("#btn-relsong span").html(s.songname);
+                        $("#btn-relsong").click(function() {
+                            goToSong(bookid, songnum);
+                        }) 
                     }
-                        
+                );
+            } else {
+                $("#btn-relsong span").html("");
+                $("#btn-relsong").click(function() {} 
                 );
             }
         }
@@ -138,7 +151,8 @@
                     showRelSong(val.rsong);
                     cbookid = sbook.id;
                     csongnum = val.songnum;
-                    window.location.hash = sbook.id + '-' + val.songnum;
+                    //window.location.hash = sbook.id + '-' + val.songnum;
+                    history.pushState({}, "", "http://" + window.location.hostname + window.location.pathname + "#" + sbook.id + '-' + val.songnum);
                     ev.preventDefault();
                 })
                 $("#desktopsongindex").append($("<div class='songindexentry'></div>").append(elm));
@@ -250,17 +264,11 @@
                 var c = window.location.hash.substr(1).split("-");
                 var fbid = 11;
                 var fsid = 0;
-                //console.log("on hash change ", c);
+                console.log("on pop state ", c);
                 if (c != "") {
                     fbid = parseInt(c[0]);
                     fsid = parseInt(c[1]);
-                    songstore.loadSongBook(fbid).then (
-                        function(sbook) {
-                            showSongBook(sbook);
-                            var val = sbook.getSongData(fsid);
-                            showSongText(val.songname, val.songtext, val.type, val.tag);
-                        }
-                    );
+                    goToSong(fbid, fsid);
                 } else {
                     songstore.loadSongBook(11).then(
                         showSongBook
