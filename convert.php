@@ -30,6 +30,11 @@ function initmysqli() {
         $books[] = $row['bookid'];
     }
 
+    $i = 22;
+    while ($i < 184) {
+        $r = $mysqli->query("SELECT title from songbooktext where bookid = 20 and songnum = $i");
+        $row = $r->fetch
+    }
     foreach ($books as $bookid) {
         echo "<p>Process $bookid </p>";
 
@@ -51,7 +56,7 @@ function initmysqli() {
                 echo "<p> $bookid : $songid - $songnum - $n has double quote </p>";
                 $text = addslashes($text);
             }
-            $r1 = $mysqli->query("INSERT INTO songbooktext VALUES ($bookid, $n, $page, '$songname', '$author', '', " . '"' . $text . '"' . ", 1, '')");
+            $r1 = $mysqli->query("INSERT INTO songbooktext-2 VALUES ($bookid, $n, $page, '$songname', '$author', '', " . '"' . $text . '"' . ", 1, '')");
             if ($mysqli->errno != 0) {
 
                 echo "<p> return {$mysqli->error} </p>";
