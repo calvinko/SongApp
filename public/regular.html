@@ -187,16 +187,18 @@
                     console.log("start load ", c);
                     if (c != "") {
                         fbid = parseInt(c[0]);
-											  if (c.length >= 2) {
+						if (c.length >= 2) {
                             fsid = parseInt(c[1]);
-												}
+						}
                     }
                     songstore.loadSongBook(fbid).then(
                         function(sbook1) {
                             showSongBook(sbook1);
-                            var v = sbook1.getSongData(fsid);
-                            showSongText(v.songname, v.songtext, v.type, v.tag);
-                            showRelSong(v.rsong);
+                            if (fsid != 0) {
+                                var v = sbook1.getSongData(fsid);
+                                showSongText(v.songname, v.songtext, v.type, v.tag);
+                                showRelSong(v.rsong);
+                            }
                         }
                     );
                 }
