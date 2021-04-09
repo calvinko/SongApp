@@ -19,13 +19,30 @@ function initmysqli() {
 if ($mysqli == null)
     initmysqli();
 
-$result = $mysqli->query("SELECT songnum,pagenum,songname, FROM songbooktext where bookid=201");
-if ($result) {
-    while ( ($row = $result->fetch_assoc()) != NULL) {
-        $sname = str_replace("10", "11", $row["songname"]);
-        $snum = $row['songnum'];
-        $q1 = "UPDATE songbooktext set songname='$sname' where bookid=21 and songnum='$snum'";
-        $mysqli->query($q1);
-        echo "$q1";
+function linkSongBook($bid) {
+    global $mysqli;
+    $result = $mysqli->query("SELECT songnum,pagenum,songname,rsong FROM songbooktext where bookid=$bid");
+    if ($result) {
+        while ( ($row = $result->fetch_assoc()) != NULL) {
+            if ($row['rsong'] != "") {
+                $r = explode(":", $row['rsong']);
+                if (count($r) == 2) {
+                    $snum = $row['songnum']; 
+                    echo "<p>" . $row['songname'] . "---" . $r[0] . "::" . "$r[1]" . "</p> \n";
+                    $rbid = $r[0];
+                    $rnum = $r[1];
+                    $q1 = "UPDATE songbooktext set rsong='$bid:$snum' where bookid=$rbid and songnum=$rnum";
+                    echo "<p> $q1 </p>"; 
+                    //$r1 = $mysqli->query($q1);
+                    //echo "<p> $r1 </p>";
+                } 
+                
+            }
+            
+        }
     }
-}    
+}
+
+echo "<html>";
+linkSongBook(202);
+echo "</html>";
