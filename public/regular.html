@@ -152,6 +152,7 @@
                     cbookid = sbook.id;
                     csongnum = val.songnum;
                     //window.location.hash = sbook.id + '-' + val.songnum;
+                    console.log("showSongBook Pushstate ", sbook.id, val.songnum);
                     history.pushState({}, "", "http://" + window.location.hostname + window.location.pathname + "#" + sbook.id + '-' + val.songnum);
                     ev.preventDefault();
                 })
