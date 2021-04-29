@@ -102,6 +102,18 @@
                             var val = sbook.getSongData(songnum);
                             showSongText(val.songname, val.songtext, val.type, val.tag);
                             showRelSong(val.rsong);
+                            //history.pushState({}, "", "http://" + window.location.hostname + window.location.pathname + "#" + sbook.id + '-' + val.songnum);
+                }
+            );
+        }
+
+        function goToSongPushState(bookid, songnum) {
+            songstore.loadSongBook(bookid).then (
+                function(sbook) {
+                            showSongBook(sbook);
+                            var val = sbook.getSongData(songnum);
+                            showSongText(val.songname, val.songtext, val.type, val.tag);
+                            showRelSong(val.rsong);
                             history.pushState({}, "", "http://" + window.location.hostname + window.location.pathname + "#" + sbook.id + '-' + val.songnum);
                 }
             );
@@ -117,8 +129,9 @@
                     function(sbook) {
                         var s = sbook.getSongData(songnum);
                         $("#btn-relsong span").html(s.songname);
+                        $("#btn-relsong").off('click');
                         $("#btn-relsong").click(function() {
-                            goToSong(bookid, songnum);
+                            goToSongPushState(bookid, songnum);
                         }) 
                     }
                 );
